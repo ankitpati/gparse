@@ -1,0 +1,162 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Mojolicious::Lite;
+
+use File::Basename qw(dirname);
+use lib dirname (__FILE__) . '/lib/perl5';
+
+use GParse::Domain qw(all_as_hash);
+
+get '/*url' => sub {
+    my $c = shift;
+
+    my %response = all_as_hash $c->stash ('url');
+
+    # Convert Perl truthy/falsey values to JS booleans. ref. Mojo::JSON.
+    foreach (keys %response) {
+        $response{$_} //= '';
+        $response{$_} = \($response{$_} ? 1 : 0) if /^is_\w+/;
+    }
+
+    $c->render (json => \%response);
+};
+
+get '/' => sub {
+    my $c = shift;
+
+    $c->render ('gparse');
+};
+
+app->start;
+
+__DATA__
+
+@@ gparse.html.ep
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>G-Parse</title>
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+        <style type="text/css">
+            button {
+              width: 100%;
+            }
+
+            .brand-logo {
+              color: #000000;
+            }
+
+            #superset {
+              margin-top: calc(50vh - 324px/2 - 68px/2);
+            }
+
+            td {
+              width: 50%;
+              word-break: break-all;
+            }
+
+            /* label focus color */
+            .input-field input[type=text]:focus+label {
+              color: #f7ba28 !important;
+            }
+
+            /* label underline focus color */
+            .input-field input[type=text]:focus {
+              border-bottom: 1px solid #f7ba28 !important;
+              box-shadow: 0 1px 0 0 #f7ba28 !important;
+            }
+
+            /* icon prefix focus color */
+            .input-field .prefix.active {
+              color: #f7ba28;
+            }
+        </style>
+        <meta name="viewport" content=
+        "width=device-width, initial-scale=1.0" />
+        <script>
+            "use strict";
+
+            window.onload = function () {
+                $("#url").keypress(function (e) {
+                    var code = e.keyCode || e.which;
+                    if (code === 13) {
+                        getval();
+                    }
+                });
+            };
+
+            function display(data) {
+                var table = "<table class='centered responsive-table striped'>" +
+                            "<tr><td>Scheme</td><td><code>" + data.scheme + "</code></td></tr>" +
+                            "<tr><td>Username</td><td><code>" + data.username + "</code></tr></td>" +
+                            "<tr><td>Password</td><td><code>" + data.password + "</code></tr></td>" +
+                            "<tr><td>Hostname</td><td><code>" + data.hostname + "</code></tr></td>" +
+                            "<tr><td>Port</td><td><code>" + data.port + "</code></tr></td>" +
+                            "<tr><td>Path</td><td><code>" + data.path + "</code></tr></td>" +
+                            "<tr><td>Query</td><td><code>" + data.query + "</code></tr></td>" +
+                            "<tr><td>Anchor</td><td><code>" + data.anchor + "</code></tr></td>" +
+                            "<tr><td>Domain</td><td><code>" + data.domain + "</code></tr></td>" +
+                            "<tr><td>Public Suffix</td><td><code>" + data.public_suffix + "</code></tr></td>" +
+                            "<tr><td>Rulable?</td><td><code>" + (data.is_rulable ? "Yes" : "No") + "</code></tr></td>" +
+                            "<tr><td>Sub-Domain?</td><td><code>" + (data.is_subdomain ? "Yes" : "No") + "</code></tr></td>" +
+                            "<tr><td>Public Suffix?</td><td><code>" + (data.is_public_suffix ? "Yes" : "No") + "</code></tr></td>" +
+                            "</table>";
+
+                $("#result").addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1");
+
+                var div = $("#result").html(table);
+            }
+
+            function getval() {
+                var inputURL = $("#url").val()
+
+                if (!inputURL) {
+                    return;
+                }
+
+                $.ajax({
+                    type: "GET",
+                    url: "/" + encodeURIComponent(inputURL),
+                    success: function (data) {
+                        display(data);
+                    }
+                });
+            }
+        </script>
+    </head>
+
+    <body class="light-blue darken-4">
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper yellow accent-4">
+                    <a class="brand-logo center">
+                        <span class="black-text">G-Parse</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <div id="superset" class="row">
+            <div class="card-panel hoverable col m6 s10 offset-m3 offset-s1">
+                <div class="row input-field col s12">
+                    <i class="material-icons prefix">language</i>
+                    <input id="url" name="url" type="text" />
+                    <label for="url">URL</label>
+                </div>
+                <div class="row col s12">
+                    <button id="submit" class="btn waves-effect waves-light btn-big yellow accent-4 black-text" onclick="getval()">Submit</button>
+                </div>
+            </div>
+            <div id="result"></div>
+        </div>
+    </body>
+</html>
