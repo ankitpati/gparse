@@ -101,7 +101,7 @@ __DATA__
                 });
             };
 
-            function display(data) {
+            function displayResult(data) {
                 var table = "<table class='centered responsive-table striped'>" +
                             "<tr><td>Scheme</td><td><code>" + data.scheme + "</code></td></tr>" +
                             "<tr><td>Username</td><td><code>" + data.username + "</code></tr></td>" +
@@ -118,9 +118,20 @@ __DATA__
                             "<tr><td>Public Suffix?</td><td><code>" + (data.is_public_suffix ? "Yes" : "No") + "</code></tr></td>" +
                             "</table>";
 
-                $("#result").addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1");
+                $("#result").removeClass().addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1");
+                $("#result").html(table);
+            }
 
-                var div = $("#result").html(table);
+            function displayError(xhr, error) {
+                var message =
+                    xhr.readyState !== 4    ? "We are unable to talk to the server." :
+                    error === "parsererror" ? "We are probably talking to the wrong server." :
+                                              "Something is wrong. Please refresh the page.";
+
+                message = "<p>" + message + "</p>";
+
+                $("#result").removeClass().addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1 red white-text");
+                $("#result").html(message);
             }
 
             function getval() {
@@ -133,9 +144,9 @@ __DATA__
                 $.ajax({
                     type: "GET",
                     url: "/" + encodeURIComponent(inputURL),
-                    success: function (data) {
-                        display(data);
-                    }
+                    dataType: "json",
+                    success: displayResult,
+                    error: displayError
                 });
             }
         </script>
