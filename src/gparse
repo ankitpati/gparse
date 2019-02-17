@@ -13,7 +13,13 @@ use GParse::Domain qw(all_as_hash);
 get '/*url' => sub {
     my $c = shift;
 
-    my %response = all_as_hash $c->stash ('url');
+    my $url = $c->stash ('url');
+
+    # Stringify query, as it is not picked up in `$url` on unencoded `GET`s.
+    my $query = q{} . $c->req->params;
+    $url .= "?$query" if $query;
+
+    my %response = all_as_hash $url;
 
     # Convert Perl truthy/falsey values to JS booleans. ref. Mojo::JSON.
     foreach (keys %response) {
