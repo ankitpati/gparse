@@ -89,8 +89,8 @@ sub _public_suffixes {
         my $suffix_list = get SUFFIX_LIST
             or die "Could not fetch ${\(SUFFIX_LIST)}!\n";
 
-        $suffix_list =~
-         s{// ===BEGIN PRIVATE DOMAINS===.*?// ===END PRIVATE DOMAINS===}{}gs;
+        #$suffix_list =~
+         #s{// ===BEGIN PRIVATE DOMAINS===.*?// ===END PRIVATE DOMAINS===}{}gs;
                # some defensive programming to deal with multiple PRIVATE
                # sections in the file, and also account for them moving around
                # instead of always being appended at the end, like they
