@@ -13,7 +13,7 @@ use Unicode::UTF8 qw(decode_utf8);
 use base qw(Exporter);
 our @EXPORT_OK = qw(is_rulable is_public_suffix is_subdomain
                     parts_as_list parts_as_hash all_as_hash
-                    get_domain_name get_root_domain get_hostname
+                    get_domain_name get_root_domain
                     scheme username password hostname port path query anchor);
 
 use Carp               qw(croak);
@@ -294,8 +294,6 @@ sub get_domain_name {
     return ($self->hostname =~ /([^.]+\.\Q$root\E)$/)[0];
 }
 
-sub get_hostname { return hostname @_ }
-
 sub is_rulable { return !!get_root_domain @_ }
 
 sub is_public_suffix {
@@ -334,26 +332,26 @@ sub main {
     @ARGV = map { decode_utf8 $_ } @ARGV unless utf8::is_utf8 $ARGV[0];
 
     foreach my $url (@ARGV) {
-        my $bud = __PACKAGE__->new ( $url );
+        my $bud = __PACKAGE__->new ($url);
 
-        my @parts = $bud->parts;
+        my @parts = $bud->parts_as_list;
 
         my $is_rulable       = $bud->is_rulable       ? 'Yes' : 'No';
         my $is_public_suffix = $bud->is_public_suffix ? 'Yes' : 'No';
         my $is_subdomain     = $bud->is_subdomain     ? 'Yes' : 'No';
 
-        my $domain_name = $bud->get_domain_name;
-        my $root_domain = $bud->get_root_domain;
-        my $hostname    = $bud->get_hostname   ;
+        my $domain_name   = $bud->get_domain_name;
+        my $public_suffix = $bud->get_root_domain;
+        my $hostname      = $bud->hostname       ;
 
         my @details;
 
-        push @details, "Rulable: $is_rulable"            ;
-        push @details, "Public Suffix: $is_public_suffix";
-        push @details, "Sub Domain: $is_subdomain"       ;
+        push @details, "Rulable? $is_rulable"            ;
+        push @details, "Public Suffix? $is_public_suffix";
+        push @details, "Sub Domain? $is_subdomain"       ;
 
-        push @details, "Domain Name: $domain_name" if $domain_name;
-        push @details, "Root Domain: $root_domain" if $root_domain;
+        push @details, "Domain: $domain_name"          if $domain_name;
+        push @details, "Public Suffix: $public_suffix" if $public_suffix;
 
         local $" = ', ';
         print "$url -> @details\n\t@parts\n";
@@ -484,7 +482,7 @@ Returns the empty string, C<''>, if domain does not have a root domain.
 
 Returns C<undef> only if an error occurs while parsing.
 
-=head2 C<get_hostname ($uri_fragment)>
+=head2 C<hostname ($uri_fragment)>
 
 Given a URI, return the parsed hostname.
 
