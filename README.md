@@ -2,6 +2,15 @@
 
 Split URLs as email clients would do, and extract rulable domains from them.
 
+## Dependencies
+
+    IO::Socket::SSL
+    LWP::Simple
+    Mojolicious::Lite
+    Net::IDN::Encode
+    Net::IDN::Nameprep
+    Unicode::UTF8
+
 ## How to Run?
 
 ### Live-Reloading Development Server:
