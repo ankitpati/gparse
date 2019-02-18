@@ -102,21 +102,62 @@ __DATA__
             };
 
             function displayResult(data) {
-                var table = "<table class='centered responsive-table striped'>" +
-                            "<tr><td>Scheme</td><td><code>" + data.scheme + "</code></td></tr>" +
-                            "<tr><td>Username</td><td><code>" + data.username + "</code></tr></td>" +
-                            "<tr><td>Password</td><td><code>" + data.password + "</code></tr></td>" +
-                            "<tr><td>Hostname</td><td><code>" + data.hostname + "</code></tr></td>" +
-                            "<tr><td>Port</td><td><code>" + data.port + "</code></tr></td>" +
-                            "<tr><td>Path</td><td><code>" + data.path + "</code></tr></td>" +
-                            "<tr><td>Query</td><td><code>" + data.query + "</code></tr></td>" +
-                            "<tr><td>Anchor</td><td><code>" + data.anchor + "</code></tr></td>" +
-                            "<tr><td>Domain</td><td><code>" + data.domain + "</code></tr></td>" +
-                            "<tr><td>Public Suffix</td><td><code>" + data.public_suffix + "</code></tr></td>" +
-                            "<tr><td>Rulable?</td><td><code>" + (data.is_rulable ? "Yes" : "No") + "</code></tr></td>" +
-                            "<tr><td>Sub-Domain?</td><td><code>" + (data.is_subdomain ? "Yes" : "No") + "</code></tr></td>" +
-                            "<tr><td>Public Suffix?</td><td><code>" + (data.is_public_suffix ? "Yes" : "No") + "</code></tr></td>" +
-                            "</table>";
+                var table = `
+                    <table class="centered responsive-table striped">
+                        <tr>
+                            <td>Scheme</td>
+                            <td><code>${ data.scheme }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Username</td>
+                            <td><code>${ data.username }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td><code>${ data.password }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Hostname</td>
+                            <td><code>${ data.hostname }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Port</td>
+                            <td><code>${ data.port }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Path</td>
+                            <td><code>${ data.path }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Query</td>
+                            <td><code>${ data.query }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Anchor</td>
+                            <td><code>${ data.anchor }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Domain</td>
+                            <td><code>${ data.domain }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Public Suffix</td>
+                            <td><code>${ data.public_suffix }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Rulable?</td>
+                            <td><code>${ data.is_rulable ? "Yes" : "No" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Sub-Domain?</td>
+                            <td><code>${ data.is_subdomain ? "Yes" : "No" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Public Suffix?</td>
+                            <td><code>${ data.is_public_suffix ? "Yes" : "No" }</code></td>
+                        </tr>
+                    </table>
+                `;
 
                 $("#result").removeClass().addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1");
                 $("#result").html(table);
