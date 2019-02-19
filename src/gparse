@@ -53,7 +53,7 @@ __DATA__
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
-        <style type="text/css">
+        <style>
             button {
               width: 100%;
             }
@@ -165,18 +165,18 @@ __DATA__
 
             function displayError(xhr, error) {
                 var message =
-                    xhr.readyState !== 4    ? "We are unable to talk to the server." :
+                    xhr.readyState !== 4    ? "We are unable to talk to the server."         :
                     error === "parsererror" ? "We are probably talking to the wrong server." :
-                                              "Something is wrong. Please refresh the page.";
+                                              "Something is wrong. Please refresh the page." ;
 
-                message = "<p>" + message + "</p>";
+                message = `<p>${ message }</p>`;
 
                 $("#result").removeClass().addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1 red white-text");
                 $("#result").html(message);
             }
 
             function getval() {
-                var inputURL = $("#url").val()
+                var inputURL = $("#url").val();
 
                 if (!inputURL) {
                     return;
@@ -184,7 +184,7 @@ __DATA__
 
                 $.ajax({
                     type: "GET",
-                    url: "/" + encodeURIComponent(inputURL),
+                    url: `/${ encodeURIComponent(inputURL) }`,
                     dataType: "json",
                     success: displayResult,
                     error: displayError
