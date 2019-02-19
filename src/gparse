@@ -21,7 +21,7 @@ get '/*url' => sub {
 
     my %response = all_as_hash $url;
 
-    # Convert Perl truthy/falsey values to JS booleans. Refer to `Mojo::JSON`.
+    # Convert Perl truthy/falsy values to JS booleans. Refer to `Mojo::JSON`.
     foreach (keys %response) {
         $response{$_} //= '';
         $response{$_} = $response{$_} ? \1 : \0 if /^is_\w+/;
@@ -176,15 +176,15 @@ __DATA__
             }
 
             function getval() {
-                var inputURL = $("#url").val();
+                var url = $("#url").val();
 
-                if (!inputURL) {
+                if (!url) {
                     return;
                 }
 
                 $.ajax({
                     type: "GET",
-                    url: `/${ encodeURIComponent(inputURL) }`,
+                    url: `/${ encodeURIComponent(url) }`,
                     dataType: "json",
                     success: displayResult,
                     error: displayError
