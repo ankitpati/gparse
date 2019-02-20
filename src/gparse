@@ -101,50 +101,61 @@ __DATA__
                     }
                 });
 
-                useAnchor();
+                fetchResult();
             };
 
-            window.onhashchange = useAnchor;
+            window.onhashchange = fetchResult;
 
             function setAnchorToURL() {
                 window.location.hash = $("#url").val();
             }
 
-            function useAnchor() {
+            function fetchResult() {
                 clearResult();
 
                 if (!window.location.hash) {
                     return;
                 }
 
-                /* Set URL field to anchor value, minus leading `#`. */
-                $("#url").val(decodeURIComponent(window.location.hash.substring(1)));
+                var decodedURL = decodeURIComponent(window.location.hash.substring(1));
+
+                $("#url").val(decodedURL);
 
                 /* Keep `label` from overlapping the text above. */
                 $("label[for='url']").removeClass().addClass("active");
 
-                fetchResult();
+                $.ajax({
+                    type: "GET",
+                    url: `/${ encodeURIComponent(decodedURL) }`,
+                    dataType: "json",
+                    success: displayResult,
+                    error: displayError
+                });
+
+                /* String Slice-n-Dice Demystified
+                 *
+                 *   window.location.hash: Get anchor string of current page.
+                 *                         We are (mis)?using that to hold
+                 *                         URLs to make the page bookmarkable.
+                 *
+                 *   .substring(1): Strip the leading `#` from the anchor
+                 *                  obtained above, as that is not part of the
+                 *                  URL we want to split.
+                 *
+                 *   decodeURIComponent: `window.location.hash` returns UTF8
+                 *                       characters as URL-encoded, so this
+                 *                       round of decoding takes care of that.
+                 *
+                 *   encodeURIComponent: `#` cannot be part of a URL, so the
+                 *                       whole path part of the AJAX call has
+                 *                       to be URL-encoded to allow safe
+                 *                       passage to `#`.
+                 */
             };
 
             function clearResult() {
                 $("#result").removeClass();
                 $("#result").html("");
-            }
-
-            function fetchResult() {
-                var url = window.location.hash.substring(1);
-
-                if (!url) {
-                    return;
-                }
-
-                $.ajax({
-                    type: "GET",
-                    url: `/${ encodeURIComponent(url) }`,
-                    dataType: "json",
-                    success: displayResult,
-                    error: displayError
-                });
             }
 
             function safeCDATA(data) {
