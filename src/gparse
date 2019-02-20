@@ -118,7 +118,7 @@ __DATA__
                 }
 
                 /* Set URL field to anchor value, minus leading `#`. */
-                $("#url").val(window.location.hash.substring(1));
+                $("#url").val(decodeURIComponent(window.location.hash.substring(1)));
 
                 /* Keep `label` from overlapping the text above. */
                 $("label[for='url']").removeClass().addClass("active");
@@ -148,7 +148,7 @@ __DATA__
             }
 
             function safeCDATA(data) {
-                return data.replace(/</g, "&lt;");
+                return decodeURIComponent(data).replace(/</g, "&lt;");
             }
 
             function displayResult(data) {
