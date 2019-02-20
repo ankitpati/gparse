@@ -87,8 +87,7 @@ __DATA__
               color: #f7ba28;
             }
         </style>
-        <meta name="viewport" content=
-        "width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <script>
             "use strict";
 
@@ -96,10 +95,55 @@ __DATA__
                 $("#url").keypress(function (e) {
                     var code = e.keyCode || e.which;
                     if (code === 13) {
-                        getval();
+                        setAnchorToURL();
                     }
                 });
+
+                useAnchor();
             };
+
+            window.onhashchange = useAnchor;
+
+            function setAnchorToURL() {
+                window.location.hash = $("#url").val();
+            }
+
+            function useAnchor() {
+                clearResult();
+
+                if (!window.location.hash) {
+                    return;
+                }
+
+                /* Set URL field to anchor value, minus leading `#`. */
+                $("#url").val(window.location.hash.substring(1));
+
+                /* Keep `label` from overlapping the text above. */
+                $("label[for='url']").removeClass().addClass("active");
+
+                fetchResult();
+            };
+
+            function clearResult() {
+                $("#result").removeClass();
+                $("#result").html("");
+            }
+
+            function fetchResult() {
+                var url = window.location.hash.substring(1);
+
+                if (!url) {
+                    return;
+                }
+
+                $.ajax({
+                    type: "GET",
+                    url: `/${ encodeURIComponent(url) }`,
+                    dataType: "json",
+                    success: displayResult,
+                    error: displayError
+                });
+            }
 
             function displayResult(data) {
                 var table = `
@@ -174,22 +218,6 @@ __DATA__
                 $("#result").removeClass().addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1 red white-text");
                 $("#result").html(message);
             }
-
-            function getval() {
-                var url = $("#url").val();
-
-                if (!url) {
-                    return;
-                }
-
-                $.ajax({
-                    type: "GET",
-                    url: `/${ encodeURIComponent(url) }`,
-                    dataType: "json",
-                    success: displayResult,
-                    error: displayError
-                });
-            }
         </script>
     </head>
 
@@ -211,7 +239,7 @@ __DATA__
                     <label for="url">URL</label>
                 </div>
                 <div class="row col s12">
-                    <button id="submit" class="btn waves-effect waves-light btn-big yellow accent-4 black-text" onclick="getval()">Submit</button>
+                    <button id="submit" class="btn waves-effect waves-light btn-big yellow accent-4 black-text" onclick="setAnchorToURL()">Submit</button>
                 </div>
             </div>
             <div id="result"></div>
