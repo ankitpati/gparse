@@ -96,7 +96,7 @@ __DATA__
 
             window.onload = function () {
                 $("#url").keypress(function (e) {
-                    let code = e.keyCode || e.which;
+                    const code = e.keyCode || e.which;
                     if (code === 13) {
                         setAnchorToURL();
                     }
@@ -118,7 +118,7 @@ __DATA__
                     return;
                 }
 
-                let decodedURL = decodeURIComponent(window.location.hash.substring(1));
+                const decodedURL = decodeURIComponent(window.location.hash.substring(1));
 
                 $("#url").val(decodedURL);
 
@@ -164,7 +164,7 @@ __DATA__
             }
 
             function displayResult(data) {
-                let table = `
+                const table = `
                     <table class="centered responsive-table striped">
                         <tr>
                             <td>Scheme</td>
@@ -226,7 +226,7 @@ __DATA__
             }
 
             function displayError(xhr, error) {
-                let message =
+                const message =
                     xhr.readyState !== 4    ? "We are unable to talk to the server."         :
                     error === "parsererror" ? "We are probably talking to the wrong server." :
                                               "Something is wrong. Please refresh the page." ;
