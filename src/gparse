@@ -49,6 +49,7 @@ __DATA__
         <title>G-Parse</title>
 
         <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -57,39 +58,39 @@ __DATA__
 
         <style>
             button {
-              width: 100%;
+                width: 100%;
             }
 
             .brand-logo {
-              color: #000000;
+                color: #000000;
             }
 
             #superset {
-              margin-top: calc(50vh - 324px/2 - 68px/2);
+                margin-top: calc(50vh - 324px/2 - 68px/2);
             }
 
             td {
-              width: 50%;
-              word-break: break-all;
+                width: 50%;
+                word-break: break-all;
             }
 
             /* label focus color */
             .input-field input[type=text]:focus+label {
-              color: #f7ba28 !important;
+                color: #f7ba28 !important;
             }
 
             /* label underline focus color */
             .input-field input[type=text]:focus {
-              border-bottom: 1px solid #f7ba28 !important;
-              box-shadow: 0 1px 0 0 #f7ba28 !important;
+                border-bottom: 1px solid #f7ba28 !important;
+                box-shadow: 0 1px 0 0 #f7ba28 !important;
             }
 
             /* icon prefix focus color */
             .input-field .prefix.active {
-              color: #f7ba28;
+                color: #f7ba28;
             }
         </style>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
         <script>
             "use strict";
 
