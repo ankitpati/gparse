@@ -96,8 +96,7 @@ __DATA__
 
             window.onload = function () {
                 $("#url").keypress(function (e) {
-                    const code = e.keyCode || e.which;
-                    if (code === 13) {
+                    if (e.which === 13) {
                         setAnchorToURL();
                     }
                 });
