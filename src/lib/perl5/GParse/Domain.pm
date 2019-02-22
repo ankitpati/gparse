@@ -40,7 +40,7 @@ use constant {
 
         (   [^:/\\?\#]+    )  # the hostname cannot contain : / \ ? #
 
-        (?:  :    (   \d*) )? # :, and digits after that,
+        (?:  :    ([0-9]*) )? # :, and English digits after that,
         (   [/\\]  [^?#]*  )? # / \, and anything but ? or # after that,
         (?:  \?   ( [^#]*) )? # ?, and anything but # after that,
         (?:  \#   (    .*) )? # #, and anything after that,
