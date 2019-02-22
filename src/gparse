@@ -30,11 +30,7 @@ get '/*url' => sub {
     $c->render (json => \%response);
 };
 
-get '/' => sub {
-    my $c = shift;
-
-    $c->render ('gparse');
-};
+get '/' => 'gparse';
 
 app->start;
 
