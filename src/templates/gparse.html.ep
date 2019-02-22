@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>G-Parse</title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+        <style>
+            button {
+                width: 100%;
+            }
+
+            .brand-logo {
+                color: #000000;
+            }
+
+            #superset {
+                margin-top: calc(50vh - 324px/2 - 68px/2);
+            }
+
+            td {
+                width: 50%;
+                word-break: break-all;
+            }
+
+            /* label focus color */
+            .input-field input[type=text]:focus+label {
+                color: #f7ba28 !important;
+            }
+
+            /* label underline focus color */
+            .input-field input[type=text]:focus {
+                border-bottom: 1px solid #f7ba28 !important;
+                box-shadow: 0 1px 0 0 #f7ba28 !important;
+            }
+
+            /* icon prefix focus color */
+            .input-field .prefix.active {
+                color: #f7ba28;
+            }
+        </style>
+
+        <script>
+            "use strict";
+
+            window.onload = function () {
+                $("#url").keypress(function (e) {
+                    if (e.which === "\r".codePointAt(0)) {
+                        setAnchorToURL();
+                    }
+                });
+
+                fetchResult();
+            };
+
+            window.onhashchange = fetchResult;
+
+            function setAnchorToURL() {
+                window.location.hash = $("#url").val();
+            }
+
+            function fetchResult() {
+                clearResult();
+
+                if (!window.location.hash) {
+                    return;
+                }
+
+                const decodedURL = decodeURIComponent(window.location.hash.substring(1));
+
+                $("#url").val(decodedURL);
+
+                /* Keep `label` from overlapping the text above. */
+                $("label[for='url']").removeClass().addClass("active");
+
+                $.ajax({
+                    type: "GET",
+                    url: `/${ encodeURIComponent(decodedURL) }`,
+                    dataType: "json",
+                    success: displayResult,
+                    error: displayError
+                });
+
+                /* String Slice-n-Dice Demystified
+                 *
+                 *   window.location.hash: Get anchor string of current page.
+                 *                         We are (mis)?using that to hold
+                 *                         URLs to make the page bookmarkable.
+                 *
+                 *   .substring(1): Strip the leading `#` from the anchor
+                 *                  obtained above, as that is not part of the
+                 *                  URL we want to split.
+                 *
+                 *   decodeURIComponent: `window.location.hash` returns UTF8
+                 *                       characters as URL-encoded, so this
+                 *                       round of decoding takes care of that.
+                 *
+                 *   encodeURIComponent: `#` cannot be part of a URL, so the
+                 *                       whole path part of the AJAX call has
+                 *                       to be URL-encoded to allow safe
+                 *                       passage for `#` through HTTP.
+                 */
+            };
+
+            function clearResult() {
+                $("#result").removeClass();
+                $("#result").html("");
+            }
+
+            function safeCDATA(data) {
+                return decodeURIComponent(data).replace(/</g, "&lt;");
+            }
+
+            function displayResult(data) {
+                const table = `
+                    <table class="centered responsive-table striped">
+                        <tr>
+                            <td>Scheme</td>
+                            <td><code>${ safeCDATA(data.scheme) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Username</td>
+                            <td><code>${ safeCDATA(data.username) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Password</td>
+                            <td><code>${ safeCDATA(data.password) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Hostname</td>
+                            <td><code>${ safeCDATA(data.hostname) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Port</td>
+                            <td><code>${ safeCDATA(data.port) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Path</td>
+                            <td><code>${ safeCDATA(data.path) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Query</td>
+                            <td><code>${ safeCDATA(data.query) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Anchor</td>
+                            <td><code>${ safeCDATA(data.anchor) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Domain</td>
+                            <td><code>${ safeCDATA(data.domain) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Public Suffix</td>
+                            <td><code>${ safeCDATA(data.public_suffix) }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Rulable?</td>
+                            <td><code>${ data.is_rulable ? "Yes" : "No" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Sub-Domain?</td>
+                            <td><code>${ data.is_subdomain ? "Yes" : "No" }</code></td>
+                        </tr>
+                        <tr>
+                            <td>Public Suffix?</td>
+                            <td><code>${ data.is_public_suffix ? "Yes" : "No" }</code></td>
+                        </tr>
+                    </table>
+                `;
+
+                $("#result").removeClass().addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1");
+                $("#result").html(table);
+            }
+
+            function displayError(xhr, error) {
+                const message =
+                    xhr.readyState !== 4    ? "We are unable to talk to the server."         :
+                    error === "parsererror" ? "We are probably talking to the wrong server." :
+                                              "Something is wrong. Please refresh the page." ;
+
+                message = `<p>${ message }</p>`;
+
+                $("#result").removeClass().addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1 red white-text");
+                $("#result").html(message);
+            }
+        </script>
+    </head>
+
+    <body class="light-blue darken-4">
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper yellow accent-4">
+                    <a class="brand-logo center">
+                        <span class="black-text">G-Parse</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <div id="superset" class="row">
+            <div class="card-panel hoverable col m6 s10 offset-m3 offset-s1">
+                <div class="row input-field col s12">
+                    <i class="material-icons prefix">language</i>
+                    <input id="url" name="url" type="text" />
+                    <label for="url">URL</label>
+                </div>
+                <div class="row col s12">
+                    <button id="submit" class="btn waves-effect waves-light btn-big yellow accent-4 black-text" onclick="setAnchorToURL()">Submit</button>
+                </div>
+            </div>
+            <div id="result"></div>
+        </div>
+    </body>
+</html>
