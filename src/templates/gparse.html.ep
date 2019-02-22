@@ -186,10 +186,8 @@
                     error === "parsererror" ? "We are probably talking to the wrong server." :
                                               "Something is wrong. Please refresh the page." ;
 
-                message = `<p>${ message }</p>`;
-
                 $("#result").removeClass().addClass("card-panel hoverable col m6 s10 offset-m3 offset-s1 red white-text");
-                $("#result").html(message);
+                $("#result").html(`<p>${ message }</p>`);
             }
         </script>
     </head>
