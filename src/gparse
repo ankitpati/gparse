@@ -149,7 +149,7 @@ __DATA__
                  *   encodeURIComponent: `#` cannot be part of a URL, so the
                  *                       whole path part of the AJAX call has
                  *                       to be URL-encoded to allow safe
-                 *                       passage to `#`.
+                 *                       passage for `#` through HTTP.
                  */
             };
 
