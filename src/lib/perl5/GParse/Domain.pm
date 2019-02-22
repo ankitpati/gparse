@@ -27,14 +27,7 @@ use constant {
     REFRESH_INTERVAL => 60 * 60 * 24, # one day in seconds
     IMPROBABLE_SUBDOMAIN => 'xyzzy---improbable---subdomain',
 
-    # Unicode whitespace not allowed in IDN.
-    BAD_WS => qr/[\t\n\N{U+000b}\f\r \N{U+0085}\N{U+00a0}\N{U+2028}\N{U+2029}]/,
-};
-
-use constant {
-    # Leading and trailing whitespace and dots.
-    STRIP_URL => qr{^ (?:${\(BAD_WS)}|\.)* | (?:${\(BAD_WS)}|\.)* $}x,
-
+    STRIP_URL => qr{^[\s.]*|[\s.]*$}, # Leading & trailing whitespace & dots.
     SPLIT_URL => qr{^(?:      # At the beginning, search for
         (?:
             (  [^:.]*    ):   # scheme followed by :
@@ -106,10 +99,10 @@ sub _public_suffixes {
         $suffix_list =~ s{(?://|#).*?$}{}gm;
                                    # discard anything following a //, #
 
-        $suffix_list =~ s/^${\(BAD_WS)}+|${\(BAD_WS)}+$//;
+        $suffix_list =~ s/^\s+|\s+$//;
                                    # discard leading and trailing whitespace
 
-        $suffix_list =~ s/${\(BAD_WS)}+/\n/g;
+        $suffix_list =~ s/\s+/\n/g;
                                    # replace multiple whitespaces with newline
 
         #$suffix_list =~ s/([^.!*\n]+)/${\(nameprep $1)}/gm;
@@ -177,7 +170,7 @@ sub _sanitize_url {
 
     $hostname = eval { domain_to_unicode nameprep $hostname };
     croak "Could not parse hostname!\n"
-        if !$hostname || $hostname =~ /\.\./ || $hostname =~ /${\(BAD_WS)}/;
+        if !$hostname || $hostname =~ /\.\./ || $hostname =~ /\s/;
                                         # catch malformed Unicode and Punycode
                                         #
                                         # '..' and ' ' get through all other
