@@ -10,6 +10,14 @@ use lib dirname (__FILE__) . '/lib/perl5';
 
 use GParse::Domain qw(all_as_hash);
 
+sub clean_routes {
+    my $extra = app->static->extra;
+    delete $extra->{$_} foreach keys %$extra;
+    return;
+}
+
+clean_routes;
+
 get '/*url' => sub {
     my $c = shift;
 
