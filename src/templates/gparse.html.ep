@@ -7,41 +7,13 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <%= stylesheet 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css' %>
+        <%= javascript 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js' %>
+        <%= javascript 'https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js' %>
+        <%= stylesheet 'https://fonts.googleapis.com/icon?family=Material+Icons' %>
 
-        <%
-            my ($style, $script);
-
-            {
-                local $/;
-
-                open my $fin_style, '<', 'assets/styles/gparse.css';
-                if ($fin_style) {
-                    $style = <$fin_style>;
-                    close $fin_style;
-                }
-
-                open my $fin_script, '<', 'assets/scripts/gparse.js';
-                if ($fin_script) {
-                    $script = <$fin_script>;
-                    close $fin_script;
-                }
-
-                $style //= '';
-                $script //= '';
-            }
-        %>
-
-        <style>
-            <%== $style %>
-        </style>
-
-        <script>
-            <%== $script %>
-        </script>
+        <%= include 'partial/assets/styles/gparse' %>
+        <%= include 'partial/assets/scripts/gparse' %>
     </head>
 
     <body class="light-blue darken-4">

@@ -1,3 +1,5 @@
+<style>
+
 button {
     width: 100%;
 }
@@ -30,3 +32,5 @@ td {
 .input-field .prefix.active {
     color: #f7ba28;
 }
+
+</style>

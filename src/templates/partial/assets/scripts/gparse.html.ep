@@ -1,3 +1,5 @@
+<script>
+
 "use strict";
 
 window.onload = function () {
@@ -139,3 +141,5 @@ function displayError(xhr, error) {
                                         "offset-m3 offset-s1 red white-text");
     $("#result").html(`<p>${ message }</p>`);
 }
+
+</script>
