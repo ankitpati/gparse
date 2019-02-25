@@ -6,7 +6,7 @@ Split URLs as email clients would do, and extract rulable domains from them.
 
     IO::Socket::SSL
     LWP::Simple
-    Mojolicious::Lite
+    Mojolicious
     Net::IDN::Encode
     Net::IDN::Nameprep
     Unicode::UTF8
