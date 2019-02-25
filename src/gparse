@@ -22,7 +22,14 @@ app->renderer->add_handler (chars => sub {
         or die "$options->{template}.$options->{format}.$options->{handler}".
                ' not found on template path on the filesystem';
 
-    $$output = path($path)->slurp;
+    my $cache = $renderer->cache;
+    my $content = $cache->get ($path);
+    unless (defined $content) {
+        $content = path($path)->slurp;
+        $cache->set ($path => $content);
+    }
+
+    $$output = $content;
 });
 
 get '/*url' => sub {
