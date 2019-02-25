@@ -38,7 +38,7 @@ get '/*url' => sub {
     my $url = $c->stash ('url');
 
     # Stringify query, as it is not picked up in `$url` on unencoded `GET`s.
-    my $query = q{} . $c->req->params;
+    my $query = $c->req->params->to_string;
     $url .= "?$query" if $query;
 
     my %response = all_as_hash $url;
