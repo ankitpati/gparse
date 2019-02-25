@@ -1,9 +1,9 @@
 #!/usr/bin/env perl
 
 use Mojolicious::Lite;
+use Mojo::File qw(path);
 
-use File::Basename qw(dirname);
-use lib dirname (__FILE__) . '/lib/perl5';
+use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
 use GParse::Domain qw(all_as_hash);
 
@@ -14,6 +14,16 @@ sub clean_routes {
 }
 
 clean_routes;
+
+app->renderer->add_handler (chars => sub {
+    my ($renderer, $c, $output, $options) = @_;
+
+    my $path = $renderer->template_path ($options)
+        or die "$options->{template}.$options->{format}.$options->{handler}".
+               ' not found on template path on the filesystem';
+
+    $$output = path($path)->slurp;
+});
 
 get '/*url' => sub {
     my $c = shift;
