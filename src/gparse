@@ -33,6 +33,8 @@ app->renderer->add_handler (chars => sub {
     $$output = $content;
 });
 
+app->renderer->compress (1);
+
 get '/*url' => sub {
     my $c = shift;
 
