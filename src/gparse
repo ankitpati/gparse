@@ -8,13 +8,11 @@ use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
 use GParse::Domain qw(all_as_hash);
 
-sub clean_routes {
+{
+    # Clean unnecessary routes.
     my $extra = app->static->extra;
     delete $extra->{$_} foreach keys %$extra;
-    return;
 }
-
-clean_routes;
 
 app->renderer->add_handler (chars => sub {
     my ($renderer, $c, $output, $options) = @_;
