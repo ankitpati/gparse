@@ -62,8 +62,10 @@ function clearResult() {
     $("#result").html("");
 }
 
-function safeCDATA(data) {
-    return decodeURIComponent(data).replace(/</g, "&lt;");
+function escapeCDATA(data) {
+    return decodeURIComponent(data)
+            .replace(/&/g, "&amp;") /* Order matters. `&amp;` must be first. */
+            .replace(/</g, "&lt;");
 }
 
 function displayResult(data) {
@@ -71,43 +73,43 @@ function displayResult(data) {
         <table class="centered responsive-table striped">
             <tr>
                 <td>Scheme</td>
-                <td><code>${ safeCDATA(data.scheme) }</code></td>
+                <td><code>${ escapeCDATA(data.scheme) }</code></td>
             </tr>
             <tr>
                 <td>Username</td>
-                <td><code>${ safeCDATA(data.username) }</code></td>
+                <td><code>${ escapeCDATA(data.username) }</code></td>
             </tr>
             <tr>
                 <td>Password</td>
-                <td><code>${ safeCDATA(data.password) }</code></td>
+                <td><code>${ escapeCDATA(data.password) }</code></td>
             </tr>
             <tr>
                 <td>Hostname</td>
-                <td><code>${ safeCDATA(data.hostname) }</code></td>
+                <td><code>${ escapeCDATA(data.hostname) }</code></td>
             </tr>
             <tr>
                 <td>Port</td>
-                <td><code>${ safeCDATA(data.port) }</code></td>
+                <td><code>${ escapeCDATA(data.port) }</code></td>
             </tr>
             <tr>
                 <td>Path</td>
-                <td><code>${ safeCDATA(data.path) }</code></td>
+                <td><code>${ escapeCDATA(data.path) }</code></td>
             </tr>
             <tr>
                 <td>Query</td>
-                <td><code>${ safeCDATA(data.query) }</code></td>
+                <td><code>${ escapeCDATA(data.query) }</code></td>
             </tr>
             <tr>
                 <td>Anchor</td>
-                <td><code>${ safeCDATA(data.anchor) }</code></td>
+                <td><code>${ escapeCDATA(data.anchor) }</code></td>
             </tr>
             <tr>
                 <td>Domain</td>
-                <td><code>${ safeCDATA(data.domain) }</code></td>
+                <td><code>${ escapeCDATA(data.domain) }</code></td>
             </tr>
             <tr>
                 <td>Public Suffix</td>
-                <td><code>${ safeCDATA(data.public_suffix) }</code></td>
+                <td><code>${ escapeCDATA(data.public_suffix) }</code></td>
             </tr>
             <tr>
                 <td>Rulable?</td>
