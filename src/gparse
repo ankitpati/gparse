@@ -2,6 +2,7 @@
 
 use Mojolicious::Lite;
 use Mojo::File qw(path);
+use Unicode::UTF8 qw(decode_utf8);
 
 use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
@@ -25,7 +26,7 @@ app->renderer->add_handler (chars => sub {
     my $cache = $renderer->cache;
     my $content = $cache->get ($path);
     unless (defined $content) {
-        $content = path($path)->slurp;
+        $content = decode_utf8 path($path)->slurp;
         $cache->set ($path => $content);
     }
 
