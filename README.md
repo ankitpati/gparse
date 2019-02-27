@@ -27,19 +27,23 @@ Split URLs as email clients would do, and extract rulable domains from them.
 
 ### Live-Reloading Development Server
 
-    morbo /path/to/gparse/src/gparse
+    morbo /opt/gparse/src/gparse
+
+#### Stop
 
 Press `Ctrl + C` to exit.
 
 ### Pre-Forking Production Server
 
-    hypnotoad /path/to/gparse/src/gparse
+    hypnotoad /opt/gparse/src/gparse
 
-Hot-deployment after code changes by repeating above command.
+#### Hot-Deployment
 
-Stop the server by:
+After code changes, repeat above command.
 
-    hypnotoad --stop /path/to/gparse/src/gparse
+#### Stop
+
+    hypnotoad --stop /opt/gparse/src/gparse
 
 ---
 
