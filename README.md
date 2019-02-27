@@ -2,6 +2,8 @@
 
 Split URLs as email clients would do, and extract rulable domains from them.
 
+---
+
 ## Dependencies
 
 ### Mandatory
@@ -15,6 +17,8 @@ Split URLs as email clients would do, and extract rulable domains from them.
 ### Performance-Enhancing Optionals
     Cpanel::JSON::XS
     Net::DNS::Native
+
+---
 
 ## How to Run?
 
@@ -33,6 +37,8 @@ Hot-deployment after code changes by repeating above command.
 Stop the server by:
 
     hypnotoad --stop /path/to/gparse/src/gparse
+
+---
 
 ## See it in Action!
 
