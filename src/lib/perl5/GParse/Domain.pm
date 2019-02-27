@@ -262,8 +262,8 @@ sub get_root_domain {
     my $longest_suffix = '';
     foreach my $suffix (@suffixes) {
         if (my ($exclude) = $suffix =~ /!(.*)$/) {
-            return $cached_roots{$hostname} = ($exclude =~ /^[^.]+\.(.*)$/)[0]
-                if $hostname =~ /(?:^|\.)$exclude$/;
+            return $cached_roots{$hostname} = ($1 =~ /^[^.]+\.(.*)$/)[0]
+                if $hostname =~ /(?:^|\.)($exclude)$/;
                                 # if suffix is an exclusion pattern, and
                                 # domain matches it, effective TLD is
                                 # one level below the suffix
