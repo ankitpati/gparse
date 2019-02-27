@@ -16,7 +16,10 @@ Split URLs as email clients would do, and extract rulable domains from them.
 
 ### Performance-Enhancing Optionals
     Cpanel::JSON::XS
+    EV
+    IO::Socket::Socks
     Net::DNS::Native
+    Role::Tiny
 
 ---
 
