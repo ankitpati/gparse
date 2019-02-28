@@ -254,6 +254,7 @@ sub get_root_domain {
     return unless $self->hostname;
 
     my $hostname = $self->hostname;
+    $hostname =~ s/${\(STRIP_URL)}//g;
 
     _public_suffixes;
 
