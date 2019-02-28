@@ -33,7 +33,7 @@ function fetchResult() {
 
     $.ajax({
         type: "GET",
-        url: "/" + encodeURIComponent(decodedURL),
+        url: encodeURIComponent(decodedURL),
         dataType: "json",
         success: displayResult,
         error: displayError
