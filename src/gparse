@@ -6,10 +6,20 @@ plugin Config => { file => 'gparse.conf' };
 
 use Mojo::File qw(path);
 use Unicode::UTF8 qw(decode_utf8);
+use HTML::Packer;
 
 use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
 use GParse::Domain qw(all_as_hash);
+
+my $packer = HTML::Packer->init;
+my $packer_opts = {
+    remove_comments => 1,
+    remove_newlines => 1,
+    do_javascript => 'best',
+    do_stylesheet => 'minify',
+    html5 => 1,
+};
 
 {
     # Clean unnecessary routes.
@@ -33,6 +43,11 @@ app->renderer->add_handler (chars => sub {
 
     $$output = $content;
 });
+
+hook after_render => sub {
+    my ($c, $output, $format) = @_;
+    $packer->minify ($output, $packer_opts) if $format eq 'html';
+};
 
 app->renderer->compress (1);
 
