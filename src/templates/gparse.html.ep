@@ -44,7 +44,65 @@
                     <button id="submit" class="btn waves-effect waves-light btn-big yellow accent-4 black-text" onclick="setAnchorToURL()">Submit</button>
                 </div>
             </div>
-            <div id="result"></div>
+            <div id="result" class="card-panel hoverable col m6 s10 offset-m3 offset-s1">
+                <table class="centered responsive-table striped">
+                    <tr>
+                        <td>Scheme</td>
+                        <td><code id="scheme"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Username</td>
+                        <td><code id="username"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><code id="password"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Hostname</td>
+                        <td><code id="hostname"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Port</td>
+                        <td><code id="port"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Path</td>
+                        <td><code id="path"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Query</td>
+                        <td><code id="query"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Anchor</td>
+                        <td><code id="anchor"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Domain</td>
+                        <td><code id="domain"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Public Suffix</td>
+                        <td><code id="public-suffix"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Rulable?</td>
+                        <td><code id="is-rulable"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Sub-Domain?</td>
+                        <td><code id="is-subdomain"></code></td>
+                    </tr>
+                    <tr>
+                        <td>Public Suffix?</td>
+                        <td><code id="is-public-suffix"></code></td>
+                    </tr>
+                </table>
+            </div>
+            <div id="failure" class="card-panel hoverable col m6 s10 offset-m3 offset-s1 red white-text">
+                <p id="error-message"></p>
+            </div>
         </div>
     </body>
 </html>
