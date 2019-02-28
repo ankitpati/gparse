@@ -7,6 +7,7 @@ Split URLs as email clients would do, and extract rulable domains from them.
 ## Dependencies
 
 ### Mandatory
+    HTML::Packer
     IO::Socket::SSL
     LWP::Simple
     Mojolicious
@@ -15,9 +16,11 @@ Split URLs as email clients would do, and extract rulable domains from them.
     Unicode::UTF8
 
 ### Performance-Enhancing Optionals
+    CSS::Packer
     Cpanel::JSON::XS
     EV
     IO::Socket::Socks
+    JavaScript::Packer
     Net::DNS::Native
     Role::Tiny
 
