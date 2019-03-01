@@ -1,6 +1,6 @@
 "use strict";
 
-window.onload = function () {
+$(function () {
     $("#url").keypress(function (e) {
         if (e.which === "\r".codePointAt(0)) {
             setAnchorToURL();
@@ -10,7 +10,7 @@ window.onload = function () {
     $("#submit").click(setAnchorToURL);
 
     fetchResult();
-};
+});
 
 window.onhashchange = fetchResult;
 
