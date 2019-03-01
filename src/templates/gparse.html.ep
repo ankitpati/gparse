@@ -42,7 +42,7 @@
                     <label for="url">URL</label>
                 </div>
                 <div class="row col s12">
-                    <button id="submit" class="btn waves-effect waves-light btn-big yellow accent-4 black-text" onclick="setAnchorToURL()">Submit</button>
+                    <button id="submit" class="btn waves-effect waves-light btn-big yellow accent-4 black-text">Submit</button>
                 </div>
             </div>
             <div id="result" class="card-panel hoverable col m6 s10 offset-m3 offset-s1">

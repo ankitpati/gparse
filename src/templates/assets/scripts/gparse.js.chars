@@ -7,6 +7,8 @@ window.onload = function () {
         }
     });
 
+    $("#submit").click(setAnchorToURL);
+
     fetchResult();
 };
 
