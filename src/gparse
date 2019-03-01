@@ -1,6 +1,7 @@
 #!/usr/bin/env perl
 
 use Mojolicious::Lite;
+plugin Config => { file => 'gparse.conf' };
 
 use Mojo::File qw(path);
 use Unicode::UTF8 qw(decode_utf8);
@@ -10,9 +11,8 @@ use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
 use GParse::Domain qw(all_as_hash);
 
-plugin Config => { file => 'gparse.conf' };
 my $config = app->config;
-
+my $cache = app->renderer->cache;
 my $packer = HTML::Packer->init;
 
 {
@@ -28,7 +28,6 @@ app->renderer->add_handler (chars => sub {
         or die "$options->{template}.$options->{format}.$options->{handler}".
                ' not found on template path on the filesystem';
 
-    my $cache = $renderer->cache;
     my $content = $cache->get ($path);
     unless (defined $content) {
         $content = decode_utf8 path($path)->slurp;
@@ -40,7 +39,19 @@ app->renderer->add_handler (chars => sub {
 
 hook after_render => sub {
     my ($c, $output, $format) = @_;
-    $packer->minify ($output, $config->{minify}) if $format eq 'html';
+
+    return unless $format eq 'html';
+
+    my $url_hit = $c->tx->req->url->to_string;
+
+    my $content = $cache->get ($url_hit);
+    unless (defined $content) {
+        $packer->minify ($output, $config->{minify});
+        $cache->set ($url_hit => $$output);
+        return;
+    }
+
+    $$output = $content;
 };
 
 app->renderer->compress (1);
