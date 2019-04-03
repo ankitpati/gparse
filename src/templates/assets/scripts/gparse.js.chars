@@ -16,9 +16,14 @@ window.onhashchange = fetchResult;
 
 document.onmouseup = function() {
     const selection = document.getSelection(),
-          selectedText = selection.toString();
+          selectedText = selection.toString(),
+          selectedNode = selection.anchorNode;
 
-    if (selectedText !== "") {
+    if (
+        selectedNode.parentNode.nodeName.toLowerCase() === "code" &&
+        selectedNode.isSameNode(selection.focusNode) &&
+        selectedText !== ""
+    ) {
         $("#url").val(selectedText);
     }
 };
