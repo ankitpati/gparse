@@ -14,7 +14,7 @@ $(function () {
 
 window.onhashchange = fetchResult;
 
-document.onmouseup = function() {
+document.onselectionchange = function() {
     const selection = document.getSelection(),
           selectedText = selection.toString(),
           selectedNode = selection.anchorNode;
