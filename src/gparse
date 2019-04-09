@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use Mojolicious::Lite;
-plugin Config => { file => 'etc/gparse.conf' };
+plugin Config => { file => 'etc/gparse-config.pl' };
 
 use Mojo::File qw(path);
 use Unicode::UTF8 qw(decode_utf8);
