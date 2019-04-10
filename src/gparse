@@ -88,7 +88,10 @@ get '/*url' => sub {
     $c->render (json => \%response);
 };
 
-get '/' => 'gparse';
+get '/' => sub {
+    my $c = shift;
+    $c->render ('gparse', format => 'html', handler => 'ep_once');
+};
 
 app->start;
 
