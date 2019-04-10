@@ -16,11 +16,11 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
         <style>
-            %= include 'assets/styles/gparse', format => 'css', handler => 'chars'
+            %= include 'styles/gparse', format => 'css', handler => 'ep_once'
         </style>
 
         <script>
-            %= include 'assets/scripts/gparse', format => 'js', handler => 'chars'
+            %= include 'scripts/gparse', format => 'js', handler => 'ep_once'
         </script>
     </head>
 

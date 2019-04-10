@@ -21,16 +21,28 @@ my $packer = HTML::Packer->init;
     delete $extra->{$_} foreach keys %$extra;
 }
 
-app->renderer->add_handler (chars => sub {
+sub handlerless_template_path {
+    my ($renderer, $options) = @_;
+    my $template_name = $renderer->template_name ($options) or return;
+    $template_name =~ s/\.[^.]+$//;
+    -r and return $_ foreach map { "$_/$template_name" } @{$renderer->paths};
+    return;
+}
+
+app->renderer->add_handler (ep_once => sub {
     my ($renderer, $c, $output, $options) = @_;
 
-    my $path = $renderer->template_path ($options)
-        or die "$options->{template}.$options->{format}.$options->{handler}".
+    my $path = handlerless_template_path ($renderer, $options)
+        or die "$options->{template}.$options->{format}".
                ' not found on template path on the filesystem';
 
     my $content = $cache->get ($path);
     unless (defined $content) {
-        $content = decode_utf8 path($path)->slurp;
+        $content = $c->render_to_string (
+            inline => decode_utf8 (path($path)->slurp),
+            handler => 'ep',
+        );
+
         $cache->set ($path => $content);
     }
 
