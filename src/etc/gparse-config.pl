@@ -24,4 +24,10 @@ my $http_port = $ENV{PORT} // 80;
         remove_comments => 1,
         remove_newlines => 1,
     },
+
+    version => {
+        gparse => '1.0.0',
+        jquery => '3.4.0',
+        materialize => '1.0.0',
+    },
 }
