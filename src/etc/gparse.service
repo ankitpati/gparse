@@ -5,9 +5,9 @@ After=network.target
 [Service]
 Type=forking
 PIDFile=/tmp/gparse.pid
-ExecStart=/home/gparse/perl5/bin/hypnotoad /opt/gparse/src/gparse
-ExecReload=/home/gparse/perl5/bin/hypnotoad /opt/gparse/src/gparse
-ExecStop=/home/gparse/perl5/bin/hypnotoad -s /opt/gparse/src/gparse
+ExecStart=/home/gparse/perl5/bin/hypnotoad /opt/gparse/src/gparse.pl
+ExecReload=/home/gparse/perl5/bin/hypnotoad /opt/gparse/src/gparse.pl
+ExecStop=/home/gparse/perl5/bin/hypnotoad -s /opt/gparse/src/gparse.pl
 
 User=gparse
 Group=gparse
