@@ -24,7 +24,7 @@ my $packer = HTML::Packer->init;
 sub handlerless_template_path {
     my ($renderer, $options) = @_;
     my $template_name = $renderer->template_name ($options) or return;
-    $template_name =~ s/\.[^.]+$//;
+    $template_name =~ s/\.html\.ep_once$//;
     -r and return $_ foreach map { "$_/$template_name" } @{$renderer->paths};
     return;
 }
@@ -90,7 +90,7 @@ get '/*url' => sub {
 
 get '/' => sub {
     my $c = shift;
-    $c->render ('gparse', format => 'html', handler => 'ep_once');
+    $c->render ('gparse.html', handler => 'ep_once');
 };
 
 app->start;
