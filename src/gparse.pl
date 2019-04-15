@@ -33,8 +33,7 @@ app->renderer->add_handler (ep_once => sub {
     my ($renderer, $c, $output, $options) = @_;
 
     my $path = handlerless_template_path ($renderer, $options)
-        or die "$options->{template}.$options->{format}".
-               ' not found on template path on the filesystem';
+        or die "$options->{template} missing on template path";
 
     my $content = $cache->get ($path);
     unless (defined $content) {
