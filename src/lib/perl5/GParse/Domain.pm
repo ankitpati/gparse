@@ -27,7 +27,7 @@ use constant {
     REFRESH_INTERVAL => 60 * 60 * 24, # one day in seconds
     IMPROBABLE_SUBDOMAIN => 'xyzzy---improbable---subdomain',
 
-    STRIP_URL => qr{^[\s.]*|[\s.]*$}, # Leading & trailing whitespace & dots.
+    STRIP_URL => qr{^\s*|\s*$}, # Leading & trailing whitespace.
     SPLIT_URL => qr{^(?:      # At the beginning, search for
         (?:
             (  [^:.]*    ):   # scheme followed by :
@@ -38,7 +38,9 @@ use constant {
 
         (?: ([^\@/]*) \@)?    # username and/or password, followed by @
 
-        (   [^:/\\?\#]+    )  # the hostname cannot contain : / \ ? #
+        \.*                   # leading dots in hostname
+        (   [^:/\\?\#]+?   )  # the hostname cannot contain : / \ ? #
+        \.*                   # trailing dots in hostname
 
         (?:  :    ([0-9]*) )? # :, and English digits after that,
         (   [/\\]  [^?#]*  )? # / \, and anything but ? or # after that,
@@ -254,7 +256,6 @@ sub get_root_domain {
     return unless $self->hostname;
 
     my $hostname = $self->hostname;
-    $hostname =~ s/${\(STRIP_URL)}//g;
 
     _public_suffixes;
 
