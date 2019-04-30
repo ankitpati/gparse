@@ -38,9 +38,12 @@ use constant {
 
         (?: ([^\@/]*) \@)?    # username and/or password, followed by @
 
-        \.*                   # leading dots in hostname
-        (   [^:/\\?\#]+?   )  # the hostname cannot contain : / \ ? #
-        \.*                   # trailing dots in hostname
+        \.*                   # leading dots before hostname
+        (
+            (?!\.)            # hostname must not start with .
+            [^:/\\?\#]+?      # hostname cannot contain : / \ ? #
+        )
+        \.*                   # trailing dots after hostname
 
         (?:  :    ([0-9]*) )? # :, and English digits after that,
         (   [/\\]  [^?#]*  )? # / \, and anything but ? or # after that,
