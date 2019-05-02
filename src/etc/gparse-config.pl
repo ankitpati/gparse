@@ -12,6 +12,9 @@ my $tls_key = $ENV{GPARSE_TLS_KEY} // '/etc/ssl/private/gparse.pem';
 # app to bind only an HTTP (not HTTPS) listener to it.
 my $http_port = $ENV{PORT} // 80;
 
+my $g_fonts = 'https://fonts.googleapis.com/css?family';
+my $cf_ajax = 'https://cdnjs.cloudflare.com/ajax/libs';
+
 {
     version => \%version,
 
@@ -34,15 +37,9 @@ my $http_port = $ENV{PORT} // 80;
     },
 
     frontend => {
-        materialicons_css => 'https://fonts.googleapis.com/icon?'.
-                             'family=Material+Icons',
-        materialize_css => 'https://cdnjs.cloudflare.com/ajax/libs/'.
-                           "materialize/$version{materialize}/css/".
-                           'materialize.min.css',
-        materialize_js => 'https://cdnjs.cloudflare.com/ajax/libs/'.
-                          "materialize/$version{materialize}/js/".
-                          'materialize.min.js',
-        jquery_js => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/'.
-                     "$version{jquery}/jquery.min.js",
+        jquery_js => "$cf_ajax/jquery/$version{jquery}/jquery.min.js",
+        materialicons_css => "$g_fonts=Material+Icons",
+        materialize_css => "$cf_ajax/materialize/$version{materialize}/css/materialize.min.css",
+        materialize_js => "$cf_ajax/materialize/$version{materialize}/js/materialize.min.js",
     },
 }
