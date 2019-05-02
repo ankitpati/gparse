@@ -27,7 +27,7 @@ my $http_port = $ENV{PORT} // 80;
 
     version => {
         gparse => '1.0.0',
-        jquery => '3.4.0',
+        jquery => '3.4.1',
         materialize => '1.0.0',
     },
 }
