@@ -1,3 +1,9 @@
+my %version = (
+    gparse => '1.0.0',
+    jquery => '3.4.1',
+    materialize => '1.0.0',
+);
+
 my $pid_file = $ENV{GPARSE_PID_FILE} // '/tmp/gparse.pid';
 my $tls_cert = $ENV{GPARSE_TLS_CERT} // '/etc/ssl/certs/gparse.pem';
 my $tls_key = $ENV{GPARSE_TLS_KEY} // '/etc/ssl/private/gparse.pem';
@@ -7,6 +13,8 @@ my $tls_key = $ENV{GPARSE_TLS_KEY} // '/etc/ssl/private/gparse.pem';
 my $http_port = $ENV{PORT} // 80;
 
 {
+    version => \%version,
+
     hypnotoad => {
         listen => [
             # Do not bind HTTPS listener if `$PORT` is exported.
@@ -25,9 +33,16 @@ my $http_port = $ENV{PORT} // 80;
         remove_newlines => 1,
     },
 
-    version => {
-        gparse => '1.0.0',
-        jquery => '3.4.1',
-        materialize => '1.0.0',
+    frontend => {
+        materialicons_css => 'https://fonts.googleapis.com/icon?'.
+                             'family=Material+Icons',
+        materialize_css => 'https://cdnjs.cloudflare.com/ajax/libs/'.
+                           "materialize/$version{materialize}/css/".
+                           'materialize.min.css',
+        materialize_js => 'https://cdnjs.cloudflare.com/ajax/libs/'.
+                          "materialize/$version{materialize}/js/".
+                          'materialize.min.js',
+        jquery_js => 'https://cdnjs.cloudflare.com/ajax/libs/jquery/'.
+                     "$version{jquery}/jquery.min.js",
     },
 }
