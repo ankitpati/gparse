@@ -49,7 +49,7 @@ function fetchResult() {
 
     $.ajax({
         type: "GET",
-        url: encodeURIComponent(decodedURL),
+        url: "<%= $c->url_for ('api') %>" + encodeURIComponent(decodedURL),
         dataType: "json",
         success: displayResult,
         error: displayError
