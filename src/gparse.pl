@@ -85,12 +85,12 @@ get '/*url' => sub {
     }
 
     $c->render (json => \%response);
-};
+} => 'api';
 
 get '/' => sub {
     my $c = shift;
     $c->render ('gparse.html', handler => 'ep_once');
-};
+} => 'ui';
 
 app->start;
 
