@@ -89,6 +89,11 @@ get '/*url' => sub {
 
 get '/' => sub {
     my $c = shift;
+
+    my $csp = $config->{csp};
+    $c->res->headers->content_security_policy
+        (join '; ', map { join ' ', $_, @{ $csp->{$_} } } keys %$csp);
+
     $c->render ('gparse.html', handler => 'ep_once');
 } => 'ui';
 
