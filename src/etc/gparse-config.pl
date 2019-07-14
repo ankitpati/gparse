@@ -54,11 +54,9 @@ my %frontend = (
             "'none'",
         ],
         'script-src' => [
-            "'unsafe-inline'",
             map s/\?.*$//r, values %{ $frontend{script} },
         ],
         'style-src' => [
-            "'unsafe-inline'",
             map s/\?.*$//r, values %{ $frontend{style} },
         ],
         'font-src' => [
