@@ -5,15 +5,15 @@ plugin Config => { file => 'etc/gparse-config.pl' };
 
 use Mojo::File qw(path);
 use Unicode::UTF8 qw(decode_utf8);
-use HTML::Packer;
 
 use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
+use HTML::Packer::CSP;
 use GParse::Domain qw(all_as_hash);
 
 my $config = app->config;
 my $cache = app->renderer->cache;
-my $packer = HTML::Packer->init;
+my $packer = HTML::Packer::CSP->init;
 
 {
     # Clean unnecessary routes.
@@ -90,9 +90,14 @@ get '/*url' => sub {
 get '/' => sub {
     my $c = shift;
 
-    my $csp = $config->{csp};
+    my %csp = %{ $config->{csp} };
+    my %packer_csp = $packer->csp;
+
+    push @{ $csp{'script-src'} }, @{ $packer_csp{'script-src'} // [] };
+    push @{ $csp{'style-src'} }, @{ $packer_csp{'style-src'} // [] };
+
     $c->res->headers->content_security_policy
-        (join '; ', map { join ' ', $_, @{ $csp->{$_} } } keys %$csp);
+        (join '; ', (map { join ' ', $_, @{ $csp{$_} } } keys %csp));
 
     $c->render ('gparse.html', handler => 'ep_once');
 } => 'ui';
