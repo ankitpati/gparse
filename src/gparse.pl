@@ -90,16 +90,20 @@ get '/*url' => sub {
 get '/' => sub {
     my $c = shift;
 
-    my %csp = %{ $config->{csp} };
+    $c->render ('gparse.html', handler => 'ep_once');
+
+    my %csp;
+    my %config_csp = %{ $config->{csp} // {} };
     my %packer_csp = $packer->csp;
 
-    push @{ $csp{'script-src'} }, @{ $packer_csp{'script-src'} // [] };
-    push @{ $csp{'style-src'} }, @{ $packer_csp{'style-src'} // [] };
+    push @{ $csp{$_} }, @{ $config_csp{$_} // [] }
+        foreach keys %config_csp;
+
+    push @{ $csp{$_} }, @{ $packer_csp{$_} // [] }
+        foreach keys %packer_csp;
 
     $c->res->headers->content_security_policy
         (join '; ', (map { join ' ', $_, @{ $csp{$_} } } keys %csp));
-
-    $c->render ('gparse.html', handler => 'ep_once');
 } => 'ui';
 
 app->start;
