@@ -4,78 +4,18 @@ use strict;
 use warnings;
 
 use Carp qw(croak);
-use Digest::SHA qw(sha256_base64);
+use Digest::SHA qw(sha256_base64 sha384_base64 sha512_base64);
 use Regexp::RegGrp;
 
 use parent qw(HTML::Packer);
 
-my $hash_algo = 'sha256';
+our @CSP_OPTS = qw(sha256 sha384 sha512);
 
-sub csp {
-    my $self = shift;
-
-    return unless $self->{csp};
-
-    my %csp = %{ $self->{csp} };
-
-    $csp{'script-src'} = [map "'$hash_algo-$_='", @{ $csp{'script-src'} }];
-    $csp{'style-src'} = [map "'$hash_algo-$_='", @{ $csp{'style-src'} }];
-
-    return %csp;
-}
-
-sub minify {
-    my ($self, $input, $opts) = @_;
-
-    croak 'First argument must be a SCALARref!' if 'SCALAR' ne ref $input;
-
-    my $html = wantarray ? ref ($input) ? $$input : $input :
-                           ref ($input) ? $input : \$input ;
-
-    if ('HASH' eq ref $opts) {
-        foreach my $field (@HTML::Packer::BOOLEAN_ACCESSORS) {
-            $self->$field ($opts->{$field}) if defined $opts->{$field};
-        }
-
-        $self->do_javascript ($opts->{do_javascript})
-            if defined $opts->{do_javascript};
-        $self->do_stylesheet ($opts->{do_stylesheet})
-            if defined $opts->{do_stylesheet};
-    }
-
-    if (not $self->no_compress_comment and
-        ${$html} =~ /$HTML::Packer::PACKER_COMMENT/s) {
-
-        return wantarray ? $$html : () if $1 eq '_no_compress_';
-    }
-
-    # (re)initialize variables used in the closures
-    $HTML::Packer::remove_comments = $self->remove_comments ||
-                       $self->remove_comments_aggressive;
-    $HTML::Packer::remove_comments_aggressive
-        = $self->remove_comments_aggressive;
-    $HTML::Packer::remove_newlines = $self->remove_newlines;
-    $HTML::Packer::html5 = $self->html5;
-    $HTML::Packer::do_javascript = $self->do_javascript;
-    $HTML::Packer::do_stylesheet = $self->do_stylesheet;
-    $HTML::Packer::js_packer = $self->javascript_packer;
-    $HTML::Packer::css_packer = $self->css_packer;
-    $HTML::Packer::reggrp_ws = $self->reggrp_whitespaces;
-
-    # hacky way to get around ->init being called before ->minify
-    $self = $self->init if $HTML::Packer::remove_comments_aggressive;
-
-    $self->reggrp_global->exec ($html);
-    $self->reggrp_whitespaces->exec ($html);
-    if ($self->remove_newlines) {
-        $self->reggrp_newlines_tags->exec ($html);
-        $self->reggrp_newlines->exec ($html);
-    }
-    $self->reggrp_void_elements->exec ($html) if $self->html5;
-    $self->reggrp_global->restore_stored ($html);
-
-    return $$html if wantarray;
-}
+# these variables are used in the closures defined in the init function
+# below - we have to use globals as using $self within the closures leads
+# to a reference cycle and thus memory leak, and we can't scope them to
+# the init method as they may change. they are set by the minify sub
+our ($do_csp, %csp);
 
 sub init {
     my $class = shift;
@@ -94,7 +34,7 @@ sub init {
                              q<(java|ecma)script['"]>;
 
             if ($opening =~ /$opening_script_re/i
-                && ($opening =~ /$js_type_re/i or $opening !~ /type/i)) {
+                and ($opening =~ /$js_type_re/i or $opening !~ /type/i)) {
 
                 $opening =~ s` type="(text/)?(java|ecma)script"``i
                     if $HTML::Packer::html5;
@@ -109,10 +49,10 @@ sub init {
                         unless $HTML::Packer::html5;
                 }
 
-                {
+                if ($do_csp) {
                     no strict 'refs';
-                    push @{ $self->{csp}{'script-src'} },
-                         &{ "${hash_algo}_base64" } ($content);
+                    push @{ $csp{'script-src'} },
+                         &{ "${do_csp}_base64" } ($content);
                 }
             }
             elsif ($opening =~ /$opening_style_re/i) {
@@ -128,10 +68,10 @@ sub init {
                         if $HTML::Packer::do_stylesheet eq 'pretty';
                 }
 
-                {
+                if ($do_csp) {
                     no strict 'refs';
-                    push @{ $self->{csp}{'style-src'} },
-                         &{ "${hash_algo}_base64" } ($content);
+                    push @{ $csp{'style-src'} },
+                         &{ "${do_csp}_base64" } ($content);
                 }
             }
         }
@@ -153,6 +93,38 @@ sub init {
     return $self;
 }
 
+sub minify {
+    my $self = shift;
+    my (undef, $opts) = @_;
+
+    %csp = ();
+
+    $self->do_csp ($opts->{do_csp})
+        if 'HASH' eq ref $opts and defined $opts->{do_csp};
+
+    $do_csp = $self->do_csp;
+
+    return $self->SUPER::minify (@_);
+}
+
+sub do_csp {
+    my ($self, $value) = @_;
+    return $self->{_do_csp} = $value
+        if defined $value and grep $value eq $_, @CSP_OPTS;
+    return $self->{_do_csp};
+}
+
+sub csp {
+    my $self = shift;
+
+    return unless $do_csp and %csp;
+
+    return (
+        'script-src' => [map "'$do_csp-$_='", @{ $csp{'script-src'} }],
+        'style-src' => [map "'$do_csp-$_='", @{ $csp{'style-src'} }],
+    );
+}
+
 1;
 
 __END__
@@ -165,7 +137,7 @@ HTML::Packer::CSP - CSP-friendly frontend to HTML::Packer
 
 =head1 VERSION
 
-0.1
+0.2
 
 =head1 SYNOPSIS
 
@@ -190,16 +162,11 @@ tag, so C<unsafe> CSP policies do not have to be used.
 
 =head1 LIMITATION
 
-To keep things simple, we only offer a SHA256 hash, and not any other hash or
-nonce. Nonces also make each server response unique, thereby hindering
-caching, or worse, introducing caching-related vulnerabilities where dumb
-proxy servers are involved.
+To keep things simple, we only offer a hashes, and not nonces.
 
-=head1 FUTURE-PROOFING
-
-If SHA256 is ever cracked like MD5 or SHA1, simply upgrading to a secure
-algorithm here is sufficient, without changing any dependent code, because
-CSP takes the algorithm with the hash.
+Nonces also make each server response unique, thereby hindering caching, or
+worse, introducing caching-related vulnerabilities where dumb proxy servers
+are involved.
 
 =head1 CONSTRUCTOR
 
@@ -213,11 +180,10 @@ Refer to my C<parent>, L<HTML::Packer>, in addition to the following:
 
 =head2 C<minify>
 
-Had to be overloaded due to a bug in L<HTML::Packer> whereby it uses the
-C<eq __PACKAGE__> construct instead of the saner C<-E<gt>isa (__PACKAGE__)>,
-thereby disallowing sub-classes from correctly functioning.
+Overloaded to deal with C<do_csp> option, that lets the user choose a hash
+algorithm.
 
-This should go if upstream fixes the underlying problem.
+This should go if upstream accepts the patch.
 
 =head2 C<csp>
 
@@ -230,6 +196,16 @@ Returns a hash that looks like this:
 
 with each element of the C<ARRAY>refs containing a CSP-friendly hash for a
 C<E<lt>scriptE<gt>> or C<E<lt>styleE<gt>> tag.
+
+=head2 C<do_csp>
+
+Defines hash algorithm for CSP hashes of embedded C<E<lt>scriptE<gt>> and
+C<E<lt>styleE<gt>> tags.
+
+Allowed values are C<'sha256'>, C<'sha384'>, C<'sha512'>.
+
+It may be left blank or set to a Perl false value to indicate that hashes
+should not be calculated, if performance is a concern.
 
 =head1 AUTHOR
 
