@@ -42,6 +42,7 @@ my %frontend = (
     minify => {
         do_javascript => 'shrink',
         do_stylesheet => 'minify',
+        do_csp => 'sha256',
         html5 => 1,
         remove_comments => 1,
         remove_newlines => 1,
