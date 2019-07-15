@@ -51,6 +51,10 @@ my %frontend = (
     frontend => \%frontend,
 
     csp => {
+        sandbox => [qw(
+            allow-scripts
+            allow-same-origin
+        )],
         'default-src' => [
             "'none'",
         ],
