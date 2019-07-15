@@ -58,11 +58,26 @@ hook after_render => sub {
     my $content = $cache->get ($url_hit);
     unless (defined $content) {
         $packer->minify ($output, $config->{minify});
-        $cache->set ($url_hit => $$output);
-        return;
-    }
 
-    $$output = $content;
+        my %csp;
+        my %config_csp = %{ $config->{csp} // {} };
+        my %packer_csp = $packer->csp;
+
+        push @{ $csp{$_} }, @{ $config_csp{$_} // [] }
+            foreach keys %config_csp;
+
+        push @{ $csp{$_} }, @{ $packer_csp{$_} // [] }
+            foreach keys %packer_csp;
+
+        $cache->set ($url_hit => {
+            output => $$output,
+            csp => (join '; ', map { join ' ', $_, @{ $csp{$_} } } keys %csp),
+        });
+    }
+    $content = $cache->get ($url_hit);
+
+    $c->res->headers->content_security_policy ($content->{csp});
+    $$output = $content->{output};
 };
 
 app->renderer->compress (1);
@@ -89,21 +104,7 @@ get '/*url' => sub {
 
 get '/' => sub {
     my $c = shift;
-
     $c->render ('gparse.html', handler => 'ep_once');
-
-    my %csp;
-    my %config_csp = %{ $config->{csp} // {} };
-    my %packer_csp = $packer->csp;
-
-    push @{ $csp{$_} }, @{ $config_csp{$_} // [] }
-        foreach keys %config_csp;
-
-    push @{ $csp{$_} }, @{ $packer_csp{$_} // [] }
-        foreach keys %packer_csp;
-
-    $c->res->headers->content_security_policy
-        (join '; ', (map { join ' ', $_, @{ $csp{$_} } } keys %csp));
 } => 'ui';
 
 app->start;
