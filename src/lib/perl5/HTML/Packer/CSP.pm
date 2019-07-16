@@ -117,12 +117,12 @@ sub do_csp {
 sub csp {
     my $self = shift;
 
-    return unless $do_csp and %csp;
+    return 'script-src' => [], 'style-src' => [] unless $do_csp and %csp;
 
-    return (
+    return
         'script-src' => [map "'$do_csp-$_='", @{ $csp{'script-src'} }],
         'style-src' => [map "'$do_csp-$_='", @{ $csp{'style-src'} }],
-    );
+    ;
 }
 
 1;
