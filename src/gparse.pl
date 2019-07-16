@@ -63,11 +63,8 @@ hook after_render => sub {
         my %config_csp = %{ $config->{csp} // {} };
         my %packer_csp = $packer->csp;
 
-        push @{ $csp{$_} }, @{ $config_csp{$_} // [] }
-            foreach keys %config_csp;
-
-        push @{ $csp{$_} }, @{ $packer_csp{$_} // [] }
-            foreach keys %packer_csp;
+        push @{ $csp{$_} }, @{ $config_csp{$_} } foreach keys %config_csp;
+        push @{ $csp{$_} }, @{ $packer_csp{$_} } foreach keys %packer_csp;
 
         $cache->set ($url_hit => {
             output => $$output,
