@@ -8,12 +8,12 @@ use Unicode::UTF8 qw(decode_utf8);
 
 use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
-use HTML::Packer::CSP;
+use HTML::Packer;
 use GParse::Domain qw(all_as_hash);
 
 my $config = app->config;
 my $cache = app->renderer->cache;
-my $packer = HTML::Packer::CSP->init;
+my $packer = HTML::Packer->init;
 
 {
     # Clean unnecessary routes.
