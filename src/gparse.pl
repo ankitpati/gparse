@@ -77,6 +77,11 @@ hook after_render => sub {
     $$output = $content->{output};
 };
 
+hook after_dispatch => sub {
+    my $c = shift;
+    $c->res->headers->remove ('Server');
+};
+
 app->renderer->compress (1);
 
 get '/*url' => sub {
