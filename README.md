@@ -8,6 +8,7 @@ Split URLs as email clients would do, and extract rulable domains from them.
 
 ### Mandatory
     HTML::Packer
+    IO::Compress::Brotli
     IO::Socket::SSL
     LWP::Protocol::https
     LWP::Simple
