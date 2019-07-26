@@ -9,6 +9,7 @@ use Unicode::UTF8 qw(decode_utf8);
 use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
 use HTML::Packer;
+use IO::Compress::Brotli qw(bro);
 use GParse::Domain qw(all_as_hash);
 
 my $config = app->config;
@@ -51,7 +52,10 @@ app->renderer->add_handler (ep_once => sub {
 hook after_render => sub {
     my ($c, $output, $format) = @_;
 
-    return unless $format eq 'html';
+    if ($format ne 'html') {
+        $$output = bro $$output;
+        return;
+    }
 
     my $url_hit = $c->tx->req->url->to_string;
 
@@ -67,7 +71,7 @@ hook after_render => sub {
         push @{ $csp{$_} }, @{ $packer_csp{$_} } foreach keys %packer_csp;
 
         $cache->set ($url_hit => {
-            output => $$output,
+            output => (bro $$output),
             csp => (join '; ', map { join ' ', $_, @{ $csp{$_} } } keys %csp),
         });
     }
@@ -79,10 +83,12 @@ hook after_render => sub {
 
 hook after_dispatch => sub {
     my $c = shift;
-    $c->res->headers->remove ('Server');
+    my $h = $c->res->headers;
+    $h->remove ('Server');
+    $h->append (Vary => 'Accept-Encoding');
+    $h->content_encoding ('br');
+    $h->content_length (length $c->res->body);
 };
-
-app->renderer->compress (1);
 
 get '/*url' => sub {
     my $c = shift;
