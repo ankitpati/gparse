@@ -52,10 +52,7 @@ app->renderer->add_handler (ep_once => sub {
 hook after_render => sub {
     my ($c, $output, $format) = @_;
 
-    if ($format ne 'html') {
-        $$output = bro $$output;
-        return;
-    }
+    return unless $format eq 'html';
 
     my $url_hit = $c->tx->req->url->to_string;
 
@@ -77,17 +74,17 @@ hook after_render => sub {
     }
     $content = $cache->get ($url_hit);
 
-    $c->res->headers->content_security_policy ($content->{csp});
+    my $h = $c->res->headers;
+    $h->append (Vary => 'Accept-Encoding');
+    $h->content_encoding ('br');
+
+    $h->content_security_policy ($content->{csp});
     $$output = $content->{output};
 };
 
 hook after_dispatch => sub {
     my $c = shift;
-    my $h = $c->res->headers;
-    $h->remove ('Server');
-    $h->append (Vary => 'Accept-Encoding');
-    $h->content_encoding ('br');
-    $h->content_length (length $c->res->body);
+    $c->res->headers->remove ('Server');
 };
 
 get '/*url' => sub {
