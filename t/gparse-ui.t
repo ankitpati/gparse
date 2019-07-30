@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use Mojo::Base qw(-strict);
-use Test::More tests => 11;
+use Test::More tests => 12;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
@@ -20,6 +20,7 @@ $t->get_ok ($t->app->routes->lookup('ui')->to_string . '/')
   ->status_is (HTTP_OK, 'HTTP status')
   ->content_type_like (qr{^text/html\b}, 'Content-Type is text/html')
   ->content_type_like (qr/\bcharset=UTF-8\b/, 'charset is UTF-8')
+  ->header_exists_not ('Server', 'Server header not present')
 
   # Compression is unconditional for the UI. We do not expect to serve the UI
   # to non-browser clients. Even there, old browsers like IE are excluded.
