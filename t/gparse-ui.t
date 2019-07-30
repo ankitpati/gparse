@@ -20,7 +20,6 @@ $t->get_ok ($t->app->routes->lookup('ui')->to_string . '/')
   ->content_type_like (qr{^text/html\b}, 'Content-Type is text/html')
   ->content_type_like (qr/\bcharset=UTF-8\b/, 'charset is UTF-8')
   ->header_is ('Content-Encoding' => 'br', 'Content-Encoding is br (Brotli)')
-  ->header_is ('Vary' => 'Accept-Encoding', 'Accept-Encoding can vary')
 ;
 
 done_testing;
