@@ -75,7 +75,6 @@ hook after_render => sub {
     $content = $cache->get ($url_hit);
 
     my $h = $c->res->headers;
-    $h->append (Vary => 'Accept-Encoding');
     $h->content_encoding ('br');
 
     $h->content_security_policy ($content->{csp});
