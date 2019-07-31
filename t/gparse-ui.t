@@ -1,7 +1,8 @@
 #!/usr/bin/env perl
 
 use Mojo::Base qw(-strict);
-use Test::More tests => 12;
+use Mojo::DOM;
+use Test::More tests => 19;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
@@ -43,3 +44,12 @@ $t->get_ok ($t->app->routes->lookup('ui')->to_string . '/')
 my $html = unbro $t->tx->res->text, 1_000_000; # Maximum 1 MB uncompressed.
 like $html, qr/^<!DOCTYPE html>/, 'using HTML5 DOCTYPE';
 is split ("\n", $html), 1, 'HTML has been minified into a single line';
+
+my $dom = Mojo::DOM->new ($html);
+
+# Basic sanity checks.
+is $dom->find($_)->size, 1, "Only one <$_>" foreach qw(html head body);
+
+# JavaScript event handlers must not be in HTML, as it impedes obfuscation.
+is $dom->find("[on$_]")->size, 0, "No on$_ handlers"
+    foreach qw(click hashchange load select);
