@@ -431,7 +431,7 @@ multiple C<is_*> methods of this module at a time.
 Pre-sanitizes the URI, as this is a very expensive operation, and returns an
 object that can be questioned via the methods below.
 
-Preffered means of interacting with the new L<GParse::Domains>; the old
+Preffered means of interacting with the new L<GParse::Domain>; the old
 way is only provided for compatibility and should be removed later as it comes
 with a performance penalty.
 
