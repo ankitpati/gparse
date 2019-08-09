@@ -10,10 +10,10 @@
         <meta name="theme-color" content="#ffd600" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link href="<%= ( config 'frontend' )->{style}{materialize} %>" rel="stylesheet" />
-        <script src="<%= ( config 'frontend' )->{script}{jquery} %>"></script>
-        <script src="<%= ( config 'frontend' )->{script}{materialize} %>"></script>
-        <link href="<%= ( config 'frontend' )->{style}{materialicons} %>" rel="stylesheet" />
+        %== style_sri 'materialize'
+        %== script_sri 'jquery'
+        %== script_sri 'materialize'
+        %== style_sri 'materialicons'
 
         <style>
             %= include 'styles/gparse.css', handler => 'ep_once'

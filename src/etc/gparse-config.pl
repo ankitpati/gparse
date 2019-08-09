@@ -75,4 +75,15 @@ my %frontend = (
             "'self'",
         ],
     },
+
+    sri => {
+        script => {
+            jquery => 'sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=',
+            materialize => 'sha256-U/cHDMTIHCeMcvehBv1xQ052bPSbJtbuiw4QA9cTKz0=',
+        },
+        style => {
+            materialicons => 'sha256-CeE7xQGHeoODwmYeb8gBh++tvYKsTTsNHsikHYYwdWw=',
+            materialize => 'sha256-OweaP/Ic6rsV+lysfyS4h+LM6sRwuO3euTYfr6M124g=',
+        },
+    },
 }

@@ -86,6 +86,24 @@ hook after_dispatch => sub {
     $c->res->headers->remove ('Server');
 };
 
+helper style_sri => sub {
+    my ($c, $style) = @_;
+    return sprintf <<'EOS',
+<link href="%s" integrity="%s" crossorigin="anonymous" rel="stylesheet" />
+EOS
+        $config->{frontend}{style}{$style},
+        $config->{sri}{style}{$style};
+};
+
+helper script_sri => sub {
+    my ($c, $script) = @_;
+    return sprintf <<'EOS',
+<script src="%s" integrity="%s" crossorigin="anonymous"></script>
+EOS
+        $config->{frontend}{script}{$script},
+        $config->{sri}{script}{$script};
+};
+
 get '/*url' => sub {
     my $c = shift;
 
