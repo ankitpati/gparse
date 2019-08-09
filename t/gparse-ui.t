@@ -55,11 +55,8 @@ is $dom->find("[on$_]")->size, 0, "No on$_ handlers"
     foreach qw(click hashchange load select);
 
 # `integrity` attribute must be present on all linked styles and scripts.
-is $dom->find('style[src][:not(integrity)]')->size, 0,
+is $dom->find('style[src]:not([integrity])')->size, 0,
     'No <style> elements without SRI';
 
-TODO: {
-    local $TODO = 'This probably exposes a bug in Mojo::DOM.';
-    is $dom->find('script[src][:not(integrity)]')->size, 0,
-        'No <script> elements without SRI';
-}
+is $dom->find('script[src]:not([integrity])')->size, 0,
+    'No <script> elements without SRI';
