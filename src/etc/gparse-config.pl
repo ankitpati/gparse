@@ -50,6 +50,7 @@ my %frontend = (
 
     frontend => \%frontend,
 
+    # Content Security Policy
     csp => {
         sandbox => [qw(
             allow-scripts
@@ -76,6 +77,7 @@ my %frontend = (
         ],
     },
 
+    # Subresource Integrity
     sri => {
         script => {
             jquery => 'sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=',
