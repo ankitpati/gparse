@@ -55,7 +55,7 @@ is $dom->find("[on$_]")->size, 0, "No on$_ handlers"
     foreach qw(click hashchange load select);
 
 # `integrity` attribute must be present on all linked styles and scripts.
-is $dom->find('style[src]:not([integrity])')->size, 0,
+is $dom->find('link[href][rel="stylesheet"]:not([integrity])')->size, 0,
     'No <style> elements without SRI';
 
 is $dom->find('script[src]:not([integrity])')->size, 0,
