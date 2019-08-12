@@ -2,11 +2,13 @@
 
 use Mojo::Base qw(-strict);
 use Mojo::DOM;
-use Test::More tests => 21;
+use Test::More tests => 24;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
 use IO::Uncompress::Brotli qw(unbro);
+use LWP::Simple qw();
+use Digest::SHA qw(sha256_base64 sha384_base64 sha512_base64);
 
 use File::Basename qw(dirname);
 use File::Spec::Functions qw(rel2abs);
@@ -62,3 +64,21 @@ is $dom->find('link[href][rel="stylesheet"]' .
 # `integrity` attribute must be present on all linked scripts.
 is $dom->find('script[src]:not([integrity])')->size, 0,
     'No <script> elements without SRI';
+
+# Check returned SRI hashes for currency. Be careful, it may be a CDN attack.
+$dom->find('link[href][integrity], script[src][integrity]')->each (sub {
+    my $uri = $_->attr ($_->tag eq 'link' ? 'href' : 'src');
+    my $sri = $_->attr ('integrity');
+
+    my ($algo, $got_hash) = $sri =~ /^([a-z0-9]+)-(.*)=$/;
+
+    my $content = LWP::Simple::get $uri
+        or die "Could not fetch resource for SRI verification!\n";
+
+    my $expected_hash = eval {
+        no strict 'refs';
+        &{ "${algo}_base64" } ($content);
+    };
+
+    is $got_hash, $expected_hash, "URI: $uri, SRI: $sri";
+});
