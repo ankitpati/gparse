@@ -54,9 +54,11 @@ is $dom->find($_)->size, 1, "Only one <$_>" foreach qw(html head body);
 is $dom->find("[on$_]")->size, 0, "No on$_ handlers"
     foreach qw(click hashchange load select);
 
-# `integrity` attribute must be present on all linked styles and scripts.
-is $dom->find('link[href][rel="stylesheet"]:not([integrity])')->size, 0,
-    'No <style> elements without SRI';
+# `integrity` attribute must be present on all linked styles, except GFonts.
+is $dom->find('link[href][rel="stylesheet"]' .
+              ':not([href^=https://fonts.googleapis.com]):not([integrity])')
+       ->size, 0, 'No non-GFonts <style> elements without SRI';
 
+# `integrity` attribute must be present on all linked scripts.
 is $dom->find('script[src]:not([integrity])')->size, 0,
     'No <script> elements without SRI';
