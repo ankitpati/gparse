@@ -15,13 +15,8 @@
         %== script_sri 'materialize'
         %== style_sri 'materialicons'
 
-        <style>
-            %= include 'styles/gparse.css', handler => 'ep_once'
-        </style>
-
-        <script>
-            %= include 'scripts/gparse.js', handler => 'ep_once'
-        </script>
+        %== style_ep 'styles/gparse.css'
+        %== script_ep 'scripts/gparse.js'
     </head>
 
     <body class="light-blue darken-4">
