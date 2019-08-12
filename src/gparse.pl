@@ -110,6 +110,18 @@ helper script_sri => sub {
     return qq{<script src="$uri" $sri crossorigin="anonymous"></script>};
 };
 
+helper style_ep => sub {
+    my ($c, $style) = @_;
+    return '<style>' . $c->render_to_string ($style, handler => 'ep_once') .
+           '</style>';
+};
+
+helper script_ep => sub {
+    my ($c, $script) = @_;
+    return '<script>' . $c->render_to_string ($script, handler => 'ep_once') .
+           '</script>';
+};
+
 get '/*url' => sub {
     my $c = shift;
 
