@@ -88,20 +88,26 @@ hook after_dispatch => sub {
 
 helper style_sri => sub {
     my ($c, $style) = @_;
-    return sprintf <<'EOS',
-<link href="%s" integrity="%s" crossorigin="anonymous" rel="stylesheet" />
+
+    my $uri = $config->{frontend}{style}{$style};
+    my $sri = $config->{sri}{style}{$style} // '';
+
+    $sri = qq{integrity="$sri"} if $sri;
+
+    return <<"EOS"
+<link href="$uri" $sri crossorigin="anonymous" rel="stylesheet" />
 EOS
-        $config->{frontend}{style}{$style},
-        $config->{sri}{style}{$style};
 };
 
 helper script_sri => sub {
     my ($c, $script) = @_;
-    return sprintf <<'EOS',
-<script src="%s" integrity="%s" crossorigin="anonymous"></script>
-EOS
-        $config->{frontend}{script}{$script},
-        $config->{sri}{script}{$script};
+
+    my $uri = $config->{frontend}{script}{$script};
+    my $sri = $config->{sri}{script}{$script} // '';
+
+    $sri = qq{integrity="$sri"} if $sri;
+
+    return qq{<script src="$uri" $sri crossorigin="anonymous"></script>};
 };
 
 get '/*url' => sub {
