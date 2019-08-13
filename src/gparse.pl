@@ -94,9 +94,7 @@ helper style_sri => sub {
 
     $sri = qq{integrity="$sri"} if $sri;
 
-    return <<"EOS"
-<link href="$uri" $sri crossorigin="anonymous" rel="stylesheet" />
-EOS
+    qq{<link href="$uri" $sri crossorigin="anonymous" rel="stylesheet" />};
 };
 
 helper script_sri => sub {
@@ -107,7 +105,7 @@ helper script_sri => sub {
 
     $sri = qq{integrity="$sri"} if $sri;
 
-    return qq{<script src="$uri" $sri crossorigin="anonymous"></script>};
+    qq{<script src="$uri" $sri crossorigin="anonymous"></script>};
 };
 
 helper style_ep => sub {
