@@ -3,7 +3,7 @@
 use Mojo::Base qw(-strict);
 use Mojo::DOM;
 use Mojo::UserAgent;
-use Test::More tests => 24;
+use Test::More tests => 25;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
@@ -33,6 +33,10 @@ $t->get_ok ($t->app->routes->lookup('ui')->to_string . '/')
   ->header_like ('Content-Security-Policy' =>
                  qr/(?:^|; )default-src 'none'(?:;|$)/,
                  'Tight CSP default-src')
+
+  ->header_like ('Content-Security-Policy' =>
+                 qr{(?:^|; )report-uri https://\w+},
+                 'Report URI present and points to HTTPS endpoint')
 
   ->header_unlike ('Content-Security-Policy' =>
                    qr/(?:^|; )script-src [^;]*'unsafe-/,
@@ -67,7 +71,6 @@ is $dom->find('script[src]:not([integrity])')->size, 0,
 
 # Check returned SRI hashes for currency. Be careful, it may be a CDN attack.
 my $ua = Mojo::UserAgent->new;
-
 $dom->find('link[href][integrity], script[src][integrity]')->each (sub {
     my $uri = $_->attr ($_->tag eq 'link' ? 'href' : 'src');
     my $sri = $_->attr ('integrity');
