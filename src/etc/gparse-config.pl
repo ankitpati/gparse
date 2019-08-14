@@ -52,6 +52,9 @@ my %frontend = (
 
     # Content Security Policy
     csp => {
+        'report-uri' => [
+            'https://ankitpati.report-uri.com/r/d/csp/enforce',
+        ],
         sandbox => [qw(
             allow-scripts
             allow-same-origin
