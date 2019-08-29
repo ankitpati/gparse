@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use Mojo::Base qw(-strict);
-use Test::More tests => 8;
+use Test::More tests => 9;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
@@ -26,4 +26,5 @@ $t->get_ok ("$api/google.com")
   ->header_exists_not ('Vary', 'Vary header not present')
   ->header_exists_not ('Content-Security-Policy',
                        'Content-Security-Policy not present')
+  ->json_is ('/hostname' => 'google.com', 'JSON correct for simple domain')
 ;
