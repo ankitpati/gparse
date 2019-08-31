@@ -20,6 +20,7 @@ document.onselectionchange = function() {
           selectedNode = selection.anchorNode;
 
     if (
+        selectedNode &&
         selectedNode.parentNode.nodeName.toLowerCase() === "code" &&
         selectedNode.isSameNode(selection.focusNode) &&
         selectedText !== ""
