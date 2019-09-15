@@ -79,4 +79,4 @@ ADD https://gitlab.com/ankitpati/scripts/raw/master/src/nutshell.sh \
 RUN chmod +x /usr/bin/nutshell
 
 ENTRYPOINT ["nutshell", "gparse:gparse", "/opt/gparse", "--"]
-CMD ["-l"]
+CMD ["bash", "-l"]
