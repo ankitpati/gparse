@@ -3,7 +3,7 @@
 mydir="$(dirname "$0")/"
 cd "$mydir"
 
-test "$#" -ne 0 && args=(-c "$*")
+test "$#" -ne 0 && args=(bash -lc "$*")
 
 docker build --tag='gparsedev' . && \
 docker run --mount type=bind,src="$(pwd)",dst='/opt/gparse' \
