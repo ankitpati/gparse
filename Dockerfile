@@ -55,9 +55,6 @@ RUN echo "$GPARSEUSER ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/$GPARSEUSER"
 
 USER $GPARSEUSER:$GPARSEUSER
 
-RUN echo 'cd /opt/gparse' >> ~/.bashrc
-RUN echo 'source ~/.bashrc' >> ~/.bash_profile
-
 # keep the following section sorted & uniq’d
 ENV TEST_EV="1"
 ENV TEST_HYPNOTOAD="1"
@@ -78,5 +75,6 @@ ADD https://gitlab.com/ankitpati/scripts/raw/master/src/nutshell.sh \
 
 RUN chmod +x /usr/bin/nutshell
 
+WORKDIR /opt/gparse
 ENTRYPOINT ["nutshell", "gparse:gparse", "/opt/gparse", "--"]
 CMD ["bash", "-l"]
