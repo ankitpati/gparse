@@ -8,7 +8,7 @@ use warnings;
 # UTF8 for Source Code, and File Handles
 use utf8;
 use open qw(:std :utf8);
-use Unicode::UTF8 qw(decode_utf8);
+use Encode qw(decode);
 
 use base qw(Exporter);
 our @EXPORT_OK = qw(is_rulable is_public_suffix is_subdomain
@@ -334,7 +334,7 @@ sub main {
     @ARGV or die "Usage:\n\t${\(split m|/|, $0)[-1]} [url]...\n";
 
     # UTF8 for Command Line Arguments
-    @ARGV = map { decode_utf8 $_ } @ARGV unless utf8::is_utf8 $ARGV[0];
+    @ARGV = map { decode 'UTF-8', $_ } @ARGV unless utf8::is_utf8 $ARGV[0];
 
     foreach my $url (@ARGV) {
         my $bud = __PACKAGE__->new ($url);
