@@ -33,7 +33,6 @@ RUN cpanm Net::IDN::Nameprep
 RUN cpanm Role::Tiny
 RUN cpanm Test::Pod
 RUN cpanm Test::Pod::Coverage
-RUN cpanm Unicode::UTF8
 
 # keep the following section sorted & uniq’d
 RUN dnf install -y bash-completion
