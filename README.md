@@ -15,7 +15,6 @@ Split URLs as email clients would do, and extract rulable domains from them.
     Mojolicious
     Net::IDN::Encode
     Net::IDN::Nameprep
-    Unicode::UTF8
 
 ### Performance-Enhancing Optionals
     CSS::Packer
