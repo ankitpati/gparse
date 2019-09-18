@@ -4,7 +4,7 @@ use Mojolicious::Lite;
 plugin Config => { file => 'etc/gparse-config.pl' };
 
 use Mojo::File qw(path);
-use Unicode::UTF8 qw(decode_utf8);
+use Encode qw(decode);
 
 use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
@@ -39,7 +39,7 @@ app->renderer->add_handler (ep_once => sub {
     my $content = $cache->get ($path);
     unless (defined $content) {
         $content = $c->render_to_string (
-            inline => decode_utf8 (path($path)->slurp),
+            inline => decode ('UTF-8', path($path)->slurp),
             handler => 'ep',
         );
 
