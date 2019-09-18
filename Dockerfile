@@ -42,7 +42,7 @@ RUN dnf install -y man-db
 RUN dnf install -y procps-ng
 RUN dnf install -y vim-enhanced
 
-RUN git clone https://github.com/rtomayko/git-sh.git
+RUN git clone https://github.com/vlad2/git-sh.git
 RUN make -C git-sh/
 RUN make -C git-sh/ install
 RUN rm -rf git-sh/
