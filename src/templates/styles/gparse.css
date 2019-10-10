@@ -1,18 +1,22 @@
 :root {
-    --theme-color-foreground: #009688;
-    --theme-color-background: teal;
-    --theme-color-text: white;
+    --theme-color: #009688;
 
-    --error-color-background: #f44336;
-    --error-color-text: white;
+    --body-color: teal;
+
+    --error-color: #f44336;
+    --error-color-txt: white;
+
+    --button-color: #26a69a;
+    --button-color-focus: #1d7d74;
+    --button-color-hover: #2bbbad;
 }
 
 body {
-    background-color: var(--theme-color-background) !important;
+    background-color: var(--body-color) !important;
 }
 
 .nav-wrapper {
-    background-color: var(--theme-color-foreground) !important;
+    background-color: var(--theme-color) !important;
 }
 
 button {
@@ -29,24 +33,39 @@ td {
 }
 
 #failure {
-    background-color: var(--error-color-background) !important;
-    color: var(--error-color-text) !important;
+    background-color: var(--error-color) !important;
+    color: var(--error-color-txt) !important;
 }
 
 /* label focus color */
 .input-field input[type=text]:focus+label {
-    color: var(--theme-color-foreground) !important;
+    color: var(--theme-color) !important;
 }
 
 /* label underline focus color */
 .input-field input[type=text]:focus {
-    border-bottom: 1px solid var(--theme-color-foreground) !important;
-    box-shadow: 0 1px 0 0 var(--theme-color-foreground) !important;
+    border-bottom: 1px solid var(--theme-color) !important;
+    box-shadow: 0 1px 0 0 var(--theme-color) !important;
+}
+
+/* button non-focussed color */
+button.btn {
+    background-color: var(--button-color) !important;
+}
+
+/* button focussed color */
+button.btn :focus {
+    background-color: var(--button-color-focus) !important;
+}
+
+/* button hover color */
+button.btn :focus {
+    background-color: var(--button-color-hover) !important;
 }
 
 /* icon prefix focus color */
 .input-field .prefix.active {
-    color: var(--theme-color-foreground);
+    color: var(--theme-color);
 }
 
 @media print {
