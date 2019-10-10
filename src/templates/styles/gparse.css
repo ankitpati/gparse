@@ -68,6 +68,18 @@ button.btn :focus {
     color: var(--theme-color);
 }
 
+@media (prefers-color-scheme: dark) {
+    :root {
+        --theme-color: black;
+
+        --body-color: #263238;
+
+        --button-color: black;
+        --button-color-focus: black;
+        --button-color-hover: black;
+    }
+}
+
 @media print {
     button {
         display: none !important;
