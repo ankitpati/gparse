@@ -10,3 +10,17 @@ td {
     width: 50%;
     word-break: break-all;
 }
+
+@media print {
+    button {
+        display: none !important;
+    }
+
+    #superset {
+        margin-top: auto;
+    }
+
+    [class|="navbar"] {
+        display: none !important;
+    }
+}
