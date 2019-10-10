@@ -8,11 +8,11 @@
 }
 
 body {
-    background-color: #008080 !important;
+    background-color: var(--theme-color-background) !important;
 }
 
 .nav-wrapper {
-    background-color: #009688 !important;
+    background-color: var(--theme-color-foreground) !important;
 }
 
 button {
@@ -29,8 +29,24 @@ td {
 }
 
 #failure {
-    background-color: #f44336 !important;
-    color: #ffffff !important;
+    background-color: var(--error-color-background) !important;
+    color: var(--error-color-text) !important;
+}
+
+/* label focus color */
+.input-field input[type=text]:focus+label {
+    color: var(--theme-color-foreground) !important;
+}
+
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid var(--theme-color-foreground) !important;
+    box-shadow: 0 1px 0 0 var(--theme-color-foreground) !important;
+}
+
+/* icon prefix focus color */
+.input-field .prefix.active {
+    color: var(--theme-color-foreground);
 }
 
 @media print {
