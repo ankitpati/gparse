@@ -1,5 +1,7 @@
 :root {
     --theme-color: #009688;
+    --theme-color-txt: black;
+    --theme-color-txt2: #009688;
 
     --body-color: teal;
 
@@ -9,10 +11,15 @@
     --button-color: #26a69a;
     --button-color-focus: #1d7d74;
     --button-color-hover: #2bbbad;
+
+    --table-stripe-color: #f2f2f280;
+
+    --card-panel-color: white;
 }
 
 body {
     background-color: var(--body-color) !important;
+    color: var(--theme-color-txt);
 }
 
 .nav-wrapper {
@@ -27,6 +34,10 @@ button {
     margin-top: calc(50vh - 324px/2 - 68px/2);
 }
 
+table.striped > tbody > tr:nth-child(odd) {
+    background-color: var(--table-stripe-color);
+}
+
 td {
     width: 50%;
     word-break: break-all;
@@ -37,9 +48,18 @@ td {
     color: var(--error-color-txt) !important;
 }
 
+.card-panel {
+    background-color: var(--card-panel-color);
+}
+
+/* text color */
+.input-field input {
+    color: var(--theme-color-txt) !important;
+}
+
 /* label focus color */
 .input-field input[type=text]:focus+label {
-    color: var(--theme-color) !important;
+    color: var(--theme-color-txt2) !important;
 }
 
 /* label underline focus color */
@@ -48,35 +68,38 @@ td {
     box-shadow: 0 1px 0 0 var(--theme-color) !important;
 }
 
-/* button non-focussed color */
 button.btn {
-    background-color: var(--button-color) !important;
+    background-color: var(--button-color);
 }
 
-/* button focussed color */
-button.btn :focus {
-    background-color: var(--button-color-focus) !important;
+button.btn:focus {
+    background-color: var(--button-color-focus);
 }
 
-/* button hover color */
-button.btn :focus {
-    background-color: var(--button-color-hover) !important;
+button.btn:hover {
+    background-color: var(--button-color-hover);
 }
 
 /* icon prefix focus color */
 .input-field .prefix.active {
-    color: var(--theme-color);
+    color: var(--theme-color-txt2);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
         --theme-color: black;
+        --theme-color-txt: white;
+        --theme-color-txt2: white;
 
-        --body-color: #263238;
+        --body-color: #212121;
 
-        --button-color: black;
+        --button-color: #222222;
         --button-color-focus: black;
         --button-color-hover: black;
+
+        --table-stripe-color: #424242;
+
+        --card-panel-color: #616161;
     }
 }
 
