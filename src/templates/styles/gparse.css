@@ -18,12 +18,12 @@
 }
 
 body {
-    background-color: var(--body-color) !important;
+    background-color: var(--body-color);
     color: var(--theme-color-txt);
 }
 
 .nav-wrapper {
-    background-color: var(--theme-color) !important;
+    background-color: var(--theme-color);
 }
 
 button {
@@ -44,8 +44,8 @@ td {
 }
 
 #failure {
-    background-color: var(--error-color) !important;
-    color: var(--error-color-txt) !important;
+    background-color: var(--error-color);
+    color: var(--error-color-txt);
 }
 
 .card-panel {
