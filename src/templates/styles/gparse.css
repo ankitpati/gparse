@@ -2,10 +2,6 @@ button {
     width: 100%;
 }
 
-.brand-logo {
-    color: #000000;
-}
-
 #superset {
     margin-top: calc(50vh - 324px/2 - 68px/2);
 }
@@ -13,20 +9,4 @@ button {
 td {
     width: 50%;
     word-break: break-all;
-}
-
-/* label focus color */
-.input-field input[type=text]:focus+label {
-    color: #f7ba28 !important;
-}
-
-/* label underline focus color */
-.input-field input[type=text]:focus {
-    border-bottom: 1px solid #f7ba28 !important;
-    box-shadow: 0 1px 0 0 #f7ba28 !important;
-}
-
-/* icon prefix focus color */
-.input-field .prefix.active {
-    color: #f7ba28;
 }

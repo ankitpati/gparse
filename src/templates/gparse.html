@@ -7,7 +7,7 @@
         <meta charset="utf-8" />
         <link rel="icon" href="data:," />
         <meta name="Description" content="Split URLs like email clients; extract rulable domains thereof." />
-        <meta name="theme-color" content="#ffd600" />
+        <meta name="theme-color" content="#26a69a" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         %== style_sri 'materialize'
@@ -19,13 +19,11 @@
         %== script_ep 'scripts/gparse.js'
     </head>
 
-    <body class="light-blue darken-4">
+    <body class="teal darken-2">
         <div class="navbar-fixed">
             <nav>
-                <div class="nav-wrapper yellow accent-4">
-                    <a class="brand-logo center">
-                        <span class="black-text">G-Parse</span>
-                    </a>
+                <div class="nav-wrapper teal">
+                    <a class="brand-logo center">G-Parse</a>
                 </div>
             </nav>
         </div>
@@ -37,12 +35,12 @@
                     <label for="url">URL</label>
                 </div>
                 <div class="row col s12">
-                    <button id="submit" class="btn btn-big yellow accent-4 black-text">Submit</button>
+                    <button id="submit" class="btn btn-big">Submit</button>
                     <!--
                         Wave effects inject CSS through JS, violating
                         CSP `style-src` directives.
                     -->
-                    <!-- <button id="submit" class="btn waves-effect waves-light btn-big yellow accent-4 black-text">Submit</button> -->
+                    <!-- <button id="submit" class="btn waves-effect waves-light btn-big">Submit</button> -->
                 </div>
             </div>
             <div id="result" class="card-panel hoverable col m6 s10 offset-m3 offset-s1">
