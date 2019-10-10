@@ -1,3 +1,12 @@
+:root {
+    --theme-color-foreground: #009688;
+    --theme-color-background: teal;
+    --theme-color-text: white;
+
+    --error-color-background: #f44336;
+    --error-color-text: white;
+}
+
 body {
     background-color: #008080 !important;
 }
