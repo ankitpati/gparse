@@ -3,7 +3,7 @@
 use Mojo::Base qw(-strict);
 use Mojo::DOM;
 use Mojo::UserAgent;
-use Test::More tests => 25;
+use Test::More tests => 26;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
@@ -84,4 +84,11 @@ $dom->find('link[href][integrity], script[src][integrity]')->each (sub {
     };
 
     is $got_hash, $expected_hash, "URI: $uri, SRI: $sri";
+});
+
+# All embedded JavaScript must `"use strict";`
+$dom->find('script')->each (sub {
+    my $text = $_->text;
+    return if $text =~ /^\s*$/;
+    like $text, qr/^\s*"use strict";/, 'Embedded JavaScript is strict';
 });
