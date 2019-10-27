@@ -58,13 +58,7 @@ ENV TEST_SUBPROCESS="1"
 ENV TEST_TLS="1"
 ENV TEST_UNIX="1"
 
-USER root:root
-
-ADD https://gitlab.com/ankitpati/scripts/raw/master/src/nutshell.sh \
-    /usr/bin/nutshell
-
-RUN chmod +x /usr/bin/nutshell
-
+COPY . /opt/gparse
 WORKDIR /opt/gparse
-ENTRYPOINT ["nutshell", "gparse:gparse", "/opt/gparse", "--"]
-CMD ["bash", "-l"]
+ENTRYPOINT ["bash"]
+CMD ["-l"]
