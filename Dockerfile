@@ -1,19 +1,10 @@
-FROM fedora:latest
+FROM perl
 LABEL maintainer="Ankit Pati <contact@ankitpati.in>"
 
-RUN sed -z 's/\ntsflags=nodocs\n/\n/' -i /etc/dnf/dnf.conf
-RUN echo 'fastestmirror=true' >> /etc/dnf/dnf.conf
-RUN echo 'deltarpm=true' >> /etc/dnf/dnf.conf
-
-RUN dnf update -y
-
-RUN dnf install -y perl
-RUN dnf install -y perl'(App::cpanminus)'
+RUN apt update
+RUN apt dist-upgrade -y
 
 ENV PERL_CPANM_OPT="--mirror https://cpan.metacpan.org/"
-RUN cpanm App::cpanminus
-RUN cpanm App::cpanoutdated
-RUN cpan-outdated -p | xargs cpanm
 
 # keep the following section sorted & uniq’d
 RUN cpanm CSS::Packer
@@ -35,11 +26,11 @@ RUN cpanm Test::Pod
 RUN cpanm Test::Pod::Coverage
 
 # keep the following section sorted & uniq’d
-RUN dnf install -y bash-completion
-RUN dnf install -y git
-RUN dnf install -y man-db
-RUN dnf install -y procps-ng
-RUN dnf install -y vim-enhanced
+RUN apt install -y bash-completion
+RUN apt install -y git
+RUN apt install -y man-db
+RUN apt install -y vim-nox
+RUN apt install -y sudo
 
 RUN git clone https://github.com/vlad2/git-sh.git
 RUN make -C git-sh/
