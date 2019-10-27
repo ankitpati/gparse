@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
+image='gparsedev'
+
 mydir="$(dirname "$0")/"
 cd "$mydir"
 
-docker build --tag='gparsedev' . && \
-docker run --mount type=bind,src="$(pwd)",dst='/opt/gparse' \
-    --publish 3000:3000 \
-    --publish 8080:8080 \
-    -it gparsedev "$@"
+docker image inspect "$image" &>/dev/null || \
+docker build --tag="$image" . && \
+docker run -it "$image" "$@"
