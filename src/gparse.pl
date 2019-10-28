@@ -120,6 +120,8 @@ helper script_ep => sub {
            '</script>';
 };
 
+get '/robots.txt' => { text => '' };
+
 get '/*url' => sub {
     my $c = shift;
 
