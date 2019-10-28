@@ -48,6 +48,11 @@ function fetchResult() {
     /* Keep `label` from overlapping the text above. */
     $("label[for='url']").removeClass().addClass("active");
 
+    if (decodedURL === "robots.txt") {
+        displayResult({ hostname: "robots.txt" });
+        return;
+    }
+
     $.ajax({
         type: "GET",
         url: "<%= $c->url_for ('api') %>" + encodeURIComponent(decodedURL),
