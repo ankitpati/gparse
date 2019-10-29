@@ -41,7 +41,7 @@ function fetchResult() {
         return;
     }
 
-    const decodedURL = decodeURIComponent(window.location.hash.substring(1));
+    let decodedURL = decodeURIComponent(window.location.hash.substring(1));
 
     $("#url").val(decodedURL);
 
@@ -49,8 +49,7 @@ function fetchResult() {
     $("label[for='url']").removeClass().addClass("active");
 
     if (decodedURL === "robots.txt") {
-        displayResult({ hostname: "robots.txt" });
-        return;
+        decodedURL = "robots.txt "; /* Avoid the `/robots.txt` endpoint. */
     }
 
     $.ajax({
