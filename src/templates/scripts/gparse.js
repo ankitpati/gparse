@@ -49,7 +49,7 @@ function fetchResult() {
     $("label[for='url']").removeClass().addClass("active");
 
     if (decodedURL === "robots.txt") {
-        decodedURL = "robots.txt "; /* Avoid the `/robots.txt` endpoint. */
+        decodedURL = "Robots.txt"; /* Avoid the `/robots.txt` endpoint. */
     }
 
     $.ajax({
