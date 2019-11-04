@@ -26,6 +26,18 @@ my %frontend = (
     },
 );
 
+my @csp_none = qw(
+    base-uri
+    default-src
+    form-action
+    frame-ancestors
+);
+
+my @csp_self = qw(
+    connect-src
+    navigate-to
+);
+
 {
     version => \%version,
 
@@ -59,9 +71,6 @@ my %frontend = (
             allow-scripts
             allow-same-origin
         )],
-        'default-src' => [
-            "'none'",
-        ],
         'script-src' => [
             map s/\?.*$//r, values %{ $frontend{script} },
         ],
@@ -75,9 +84,8 @@ my %frontend = (
         'img-src' => [
             'data:',
         ],
-        'connect-src' => [
-            "'self'",
-        ],
+        (map { $_ => [ "'none'" ] } @csp_none),
+        (map { $_ => [ "'self'" ] } @csp_self),
     },
 
     # Subresource Integrity
