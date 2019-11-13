@@ -25,7 +25,7 @@ my $packer = HTML::Packer->init;
     delete $extra->{$_} foreach keys %$extra;
 }
 
-sub handlerless_template_path {
+sub _handlerless_template_path {
     my ($renderer, $options) = @_;
     my $template_name = $renderer->template_name ($options) or return;
     $template_name =~ s/\.html\.(?:ep|data)_once$//;
@@ -33,10 +33,10 @@ sub handlerless_template_path {
     return;
 }
 
-sub render_once_handler {
+sub _render_once_handler {
     my ($renderer, $c, $output, $options) = @_;
 
-    my $path = handlerless_template_path $renderer, $options
+    my $path = _handlerless_template_path $renderer, $options
         or die "$options->{template} missing on template path";
 
     my $content = $cache->get ($path);
@@ -65,8 +65,8 @@ sub render_once_handler {
     return;
 }
 
-app->renderer->add_handler(ep_once => \&render_once_handler)
-             ->add_handler(data_once => \&render_once_handler);
+app->renderer->add_handler(ep_once => \&_render_once_handler)
+             ->add_handler(data_once => \&_render_once_handler);
 
 hook after_render => sub {
     my ($c, $output, $format) = @_;
