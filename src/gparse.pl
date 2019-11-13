@@ -33,7 +33,7 @@ sub handlerless_template_path {
 app->renderer->add_handler (ep_once => sub {
     my ($renderer, $c, $output, $options) = @_;
 
-    my $path = handlerless_template_path ($renderer, $options)
+    my $path = handlerless_template_path $renderer, $options
         or die "$options->{template} missing on template path";
 
     my $content = $cache->get ($path);
