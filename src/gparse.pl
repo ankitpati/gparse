@@ -127,16 +127,17 @@ helper script_sri => sub {
     qq{<script src="$uri" $sri crossorigin="anonymous"></script>};
 };
 
-helper style_ep => sub {
-    my ($c, $style) = @_;
-    return '<style>' . $c->render_to_string ($style, handler => 'ep_once') .
-           '</style>';
-};
+helper ep_tag => sub {
+    my ($c, $filename) = @_;
 
-helper script_ep => sub {
-    my ($c, $script) = @_;
-    return '<script>' . $c->render_to_string ($script, handler => 'ep_once') .
-           '</script>';
+    my $type = $types->file_type ($filename);
+
+    my $tag = $type =~ /\bcss\b/i ? 'style' :
+              $type =~ /\bjavascript\b/i ? 'script' :
+              die 'Unknown filetype for EP';
+
+    return "<$tag>" . $c->render_to_string ($filename, handler => 'ep_once') .
+           "</$tag>";
 };
 
 helper data_blob => sub {
