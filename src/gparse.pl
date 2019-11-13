@@ -140,7 +140,7 @@ helper ep_tag => sub {
            "</$tag>";
 };
 
-helper data_blob => sub {
+helper data_attr => sub {
     my ($c, $filename) = @_;
     return $c->render_to_string ($filename, handler => 'data_once');
 };
