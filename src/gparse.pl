@@ -10,10 +10,13 @@ use lib path(__FILE__)->sibling('lib/perl5')->to_string;
 
 use HTML::Packer;
 use IO::Compress::Brotli qw(bro);
+use URI;
+
 use GParse::Domain qw(all_as_hash);
 
 my $config = app->config;
 my $cache = app->renderer->cache;
+my $types = app->types;
 my $packer = HTML::Packer->init;
 
 {
@@ -25,12 +28,12 @@ my $packer = HTML::Packer->init;
 sub handlerless_template_path {
     my ($renderer, $options) = @_;
     my $template_name = $renderer->template_name ($options) or return;
-    $template_name =~ s/\.html\.ep_once$//;
+    $template_name =~ s/\.html\.(?:ep|data)_once$//;
     -r and return $_ foreach map { "$_/$template_name" } @{$renderer->paths};
     return;
 }
 
-app->renderer->add_handler (ep_once => sub {
+sub render_once_handler {
     my ($renderer, $c, $output, $options) = @_;
 
     my $path = handlerless_template_path $renderer, $options
@@ -38,16 +41,32 @@ app->renderer->add_handler (ep_once => sub {
 
     my $content = $cache->get ($path);
     unless (defined $content) {
-        $content = $c->render_to_string (
-            inline => decode ('UTF-8', path($path)->slurp),
-            handler => 'ep',
-        );
+        my $handler = $options->{handler};
+
+        my $bytes = path($path)->slurp;
+
+        if ($handler eq 'ep_once') {
+            $content = $c->render_to_string (
+                inline => decode ('UTF-8', $bytes),
+                handler => 'ep',
+            );
+        }
+        elsif ($handler eq 'data_once') {
+            my $u = URI->new('data:');
+            $u->media_type ($types->file_type ($path));
+            $u->data ($bytes);
+            $content = "$u";
+        }
 
         $cache->set ($path => $content);
     }
 
     $$output = $content;
-});
+    return;
+}
+
+app->renderer->add_handler(ep_once => \&render_once_handler)
+             ->add_handler(data_once => \&render_once_handler);
 
 hook after_render => sub {
     my ($c, $output, $format) = @_;
