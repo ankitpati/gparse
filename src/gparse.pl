@@ -139,6 +139,11 @@ helper script_ep => sub {
            '</script>';
 };
 
+helper data_blob => sub {
+    my ($c, $filename) = @_;
+    return $c->render_to_string ($filename, handler => 'data_once');
+};
+
 get '/robots.txt' => { text => '', format => 'text' } => 'robots';
 
 get '/*url' => sub {
