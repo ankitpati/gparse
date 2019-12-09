@@ -138,13 +138,14 @@ helper ep_tag => sub {
               $type =~ /\bjavascript\b/i ? 'script' :
               die 'Unknown filetype for EP';
 
-    return "<$tag>" . $c->render_to_string ($filename, handler => 'ep_once') .
-           "</$tag>";
+    "<$tag>" .
+        $c->render_to_string ($filename, handler => 'ep_once') .
+    "</$tag>";
 };
 
 helper data_attr => sub {
     my ($c, $filename) = @_;
-    return $c->render_to_string ($filename, handler => 'data_once');
+    $c->render_to_string ($filename, handler => 'data_once');
 };
 
 get '/robots.txt' => { text => '', format => 'txt' } => 'robots';
