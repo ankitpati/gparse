@@ -37,9 +37,7 @@ RUN make -C git-sh/ install
 RUN rm -rf git-sh/
 
 ENV GPARSEUSER="gparse"
-
-RUN groupadd "$GPARSEUSER"
-RUN useradd -g "$GPARSEUSER" "$GPARSEUSER"
+RUN useradd "$GPARSEUSER"
 
 USER $GPARSEUSER:$GPARSEUSER
 
