@@ -3,7 +3,7 @@
 use Mojo::Base qw(-strict);
 use Mojo::DOM;
 use Mojo::UserAgent;
-use Test::More tests => 26;
+use Test::More tests => 27;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
@@ -29,6 +29,8 @@ $t->get_ok ($t->app->routes->lookup('ui')->to_string . '/')
   # to non-browser clients. Even there, old browsers like IE are excluded.
   ->header_is ('Content-Encoding' => 'br', 'Content-Encoding is br (Brotli)')
   ->header_exists_not ('Vary', 'Vary header not present')
+
+  ->header_is ('Referrer-Policy' => 'no-referrer', 'Referrer-Policy is tight')
 
   ->header_like ('Content-Security-Policy' =>
                  qr/(?:^|; )default-src 'none'(?:;|$)/,
