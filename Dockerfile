@@ -30,7 +30,6 @@ RUN apt install -y bash-completion
 RUN apt install -y git
 RUN apt install -y man-db
 RUN apt install -y vim-nox
-RUN apt install -y sudo
 
 RUN git clone https://github.com/vlad2/git-sh.git
 RUN make -C git-sh/
@@ -41,22 +40,8 @@ ENV GPARSEUSER="gparse"
 
 RUN groupadd "$GPARSEUSER"
 RUN useradd -g "$GPARSEUSER" "$GPARSEUSER"
-RUN echo "$GPARSEUSER ALL=(ALL) NOPASSWD: ALL" > "/etc/sudoers.d/$GPARSEUSER"
 
 USER $GPARSEUSER:$GPARSEUSER
-
-# keep the following section sorted & uniq’d
-ENV TEST_EV="1"
-ENV TEST_HYPNOTOAD="1"
-ENV TEST_IPV6="1"
-ENV TEST_MORBO="1"
-ENV TEST_ONLINE="1"
-ENV TEST_POD="1"
-ENV TEST_PREFORK="1"
-ENV TEST_SOCKS="1"
-ENV TEST_SUBPROCESS="1"
-ENV TEST_TLS="1"
-ENV TEST_UNIX="1"
 
 COPY . /opt/gparse
 WORKDIR /opt/gparse
