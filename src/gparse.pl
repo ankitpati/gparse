@@ -147,7 +147,7 @@ helper data_attr => sub {
     return $c->render_to_string ($filename, handler => 'data_once');
 };
 
-get '/robots.txt' => { text => '', format => 'text' } => 'robots';
+get '/robots.txt' => { text => '', format => 'txt' } => 'robots';
 
 get '/*url' => sub {
     my $c = shift;
