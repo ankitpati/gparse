@@ -36,10 +36,9 @@ RUN make -C git-sh/
 RUN make -C git-sh/ install
 RUN rm -rf git-sh/
 
-ENV GPARSEUSER="gparse"
-RUN useradd "$GPARSEUSER"
+RUN useradd gparse
 
-USER $GPARSEUSER:$GPARSEUSER
+USER gparse
 
 COPY . /opt/gparse
 WORKDIR /opt/gparse
