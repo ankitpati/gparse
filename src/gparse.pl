@@ -94,9 +94,11 @@ hook after_render => sub {
     $content = $cache->get ($url_hit);
 
     my $h = $c->res->headers;
-    $h->content_encoding ('br');
+    $h->content_encoding ('br')
+      ->content_security_policy ($content->{csp})
+      ->add ('Referrer-Policy' => 'no-referrer')
+    ;
 
-    $h->content_security_policy ($content->{csp});
     $$output = $content->{output};
 };
 
