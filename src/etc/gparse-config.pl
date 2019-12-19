@@ -1,10 +1,10 @@
-use IO::Socket::SSL qw(SSL_VERIFY_PEER);
+use IO::Socket::SSL qw(SSL_VERIFY_PEER SSL_VERIFY_FAIL_IF_NO_PEER_CERT);
 
 my $pid_file = $ENV{GPARSE_PID_FILE} // '/tmp/gparse.pid';
 
 my %tls = (
     ca => $ENV{GPARSE_TLS_CA} // '/etc/ssl/certs/origin-pull-ca.pem',
-    verify => SSL_VERIFY_PEER,
+    verify => SSL_VERIFY_PEER | SSL_VERIFY_FAIL_IF_NO_PEER_CERT,
     cert => $ENV{GPARSE_TLS_CERT} // '/etc/ssl/certs/gparse.pem',
     key => $ENV{GPARSE_TLS_KEY} // '/etc/ssl/private/gparse.pem',
 );
