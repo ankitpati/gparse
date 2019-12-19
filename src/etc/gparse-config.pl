@@ -1,3 +1,5 @@
+use IO::Socket::SSL qw(SSL_VERIFY_PEER);
+
 my $pid_file = $ENV{GPARSE_PID_FILE} // '/tmp/gparse.pid';
 
 my %tls = (
