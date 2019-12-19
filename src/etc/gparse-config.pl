@@ -1,4 +1,5 @@
 my $pid_file = $ENV{GPARSE_PID_FILE} // '/tmp/gparse.pid';
+my $tls_ca = $ENV{GPARSE_TLS_CA} // '/etc/ssl/certs/origin-pull-ca.pem';
 my $tls_cert = $ENV{GPARSE_TLS_CERT} // '/etc/ssl/certs/gparse.pem';
 my $tls_key = $ENV{GPARSE_TLS_KEY} // '/etc/ssl/private/gparse.pem';
 
@@ -44,7 +45,7 @@ my @csp_self = qw(
     hypnotoad => {
         listen => [
             # Do not bind HTTPS listener if `$PORT` is exported.
-            $ENV{PORT} ? () : "https://*:443?cert=$tls_cert&key=$tls_key",
+            $ENV{PORT} ? () : "https://*:443?ca=$tls_ca&cert=$tls_cert&key=$tls_key",
 
             "http://*:$http_port",
         ],
