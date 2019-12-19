@@ -49,8 +49,8 @@ my @csp_self = qw(
     hypnotoad => {
         listen => [
             # Do not bind HTTPS listener if `$PORT` is exported.
-            $ENV{PORT} ? () : "https://*:443?ca=$tls{ca}&verify=$tls{verify}".
-                                           "&cert=$tls{cert}&key=$tls{key}",
+            $ENV{PORT} ? () : ("https://*:443?" .
+                                    join '&', map "$_=$tls{$_}", keys %tls),
 
             "http://*:$http_port",
         ],
