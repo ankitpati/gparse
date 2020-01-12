@@ -77,7 +77,7 @@ function fetchResult() {
      *                       part of the AJAX call has to be URL-encoded to
      *                       allow safe passage for `#` through HTTP.
      */
-};
+}
 
 function displayResult(data) {
     $("#scheme").text(data.scheme);
