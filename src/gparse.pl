@@ -138,7 +138,7 @@ helper ep_tag => sub {
               $type =~ /\bjavascript\b/i ? 'script' :
               die 'Unknown filetype for EP';
 
-    "<$tag>" .
+    "<$tag" . ($tag eq 'script' ? ' type="module"' : '') . '>' .
         $c->render_to_string ($filename, handler => 'ep_once') .
     "</$tag>";
 };

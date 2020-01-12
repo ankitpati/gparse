@@ -1,5 +1,7 @@
 "use strict";
 
+import "<%= ( config 'frontend' )->{script}{jquery} %>";
+
 $(function () {
     $("#url").keypress(function (e) {
         if (e.which === "\r".codePointAt(0)) {
