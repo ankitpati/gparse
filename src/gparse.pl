@@ -132,15 +132,27 @@ helper script_sri => sub {
 helper ep_tag => sub {
     my ($c, $filename) = @_;
 
-    my $type = $types->file_type ($filename);
+    # <start>, </end> tags
+    my ($start, $end);
 
-    my $tag = $type =~ /\bcss\b/i ? 'style' :
-              $type =~ /\bjavascript\b/i ? 'script' :
-              die 'Unknown filetype for EP';
+    if ($filename =~ /\.css$/i) {
+        $start = '<style>';
+        $end = '</style>';
+    }
+    elsif ($filename =~ /\.js$/i) {
+        $start = '<script>';
+        $end = '</script>';
+    }
+    elsif ($filename =~ /\.mjs$/i) {
+        $start = '<script type="module">';
+        $end = '</script>';
+    }
+    else {
+        die 'Unknown filetype for EP';
+    }
 
-    "<$tag" . ($tag eq 'script' ? ' type="module"' : '') . '>' .
-        $c->render_to_string ($filename, handler => 'ep_once') .
-    "</$tag>";
+    return
+        $start . $c->render_to_string($filename, handler => 'ep_once') . $end;
 };
 
 helper data_attr => sub {
