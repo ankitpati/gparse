@@ -13,7 +13,6 @@ my %tls = (
 # app to bind only an HTTP (not HTTPS) listener to it.
 my $http_port = $ENV{PORT} // 80;
 
-my $g_fonts = 'https://fonts.googleapis.com';
 my $cf_ajax = 'https://cdnjs.cloudflare.com/ajax/libs';
 
 my %version = (
@@ -28,7 +27,6 @@ my %frontend = (
         materialize => "$cf_ajax/materialize/$version{materialize}/js/materialize.min.js",
     },
     style => {
-        materialicons => "$g_fonts/css?family=Material+Icons",
         materialize => "$cf_ajax/materialize/$version{materialize}/css/materialize.min.css",
     },
 );
@@ -86,7 +84,6 @@ my @csp_self = qw(
             map s/\?.*$//r, values %{ $frontend{style} },
         ],
         'font-src' => [
-            $g_fonts,
             'https://fonts.gstatic.com',
         ],
         'img-src' => [
