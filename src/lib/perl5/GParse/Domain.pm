@@ -23,7 +23,7 @@ use Net::IDN::Nameprep qw(nameprep);
 
 use constant {
     SUFFIX_LIST      => 'https://publicsuffix.org/list/public_suffix_list.dat',
-    SUFFIX_FILE      => '/tmp/gparse-public-suffix-list.dat',
+    SUFFIX_FILE      => "$ENV{HOME}/.gparse-public-suffix-list.dat",
     REFRESH_INTERVAL => 60 * 60 * 24, # one day in seconds
     IMPROBABLE_SUBDOMAIN => 'xyzzy---improbable---subdomain',
 
