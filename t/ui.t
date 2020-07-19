@@ -3,7 +3,7 @@
 use Mojo::Base qw(-strict);
 use Mojo::DOM;
 use Mojo::UserAgent;
-use Test::More tests => 27;
+use Test::More tests => 32;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
@@ -33,8 +33,28 @@ $t->get_ok ($t->app->routes->lookup('ui')->to_string . '/')
   ->header_is ('Referrer-Policy' => 'no-referrer', 'Referrer-Policy is tight')
 
   ->header_like ('Content-Security-Policy' =>
+                 qr/(?:^|; )base-uri 'none'(?:;|$)/,
+                 'Tight CSP base-uri')
+
+  ->header_like ('Content-Security-Policy' =>
                  qr/(?:^|; )default-src 'none'(?:;|$)/,
                  'Tight CSP default-src')
+
+  ->header_like ('Content-Security-Policy' =>
+                 qr/(?:^|; )form-action 'none'(?:;|$)/,
+                 'Tight CSP form-action')
+
+  ->header_like ('Content-Security-Policy' =>
+                 qr/(?:^|; )frame-ancestors 'none'(?:;|$)/,
+                 'Tight CSP frame-ancestors')
+
+  ->header_like ('Content-Security-Policy' =>
+                 qr/(?:^|; )connect-src 'self'(?:;|$)/,
+                 'Tight CSP connect-src')
+
+  ->header_like ('Content-Security-Policy' =>
+                 qr/(?:^|; )navigate-to 'self'(?:;|$)/,
+                 'Tight CSP navigate-to')
 
   ->header_like ('Content-Security-Policy' =>
                  qr{(?:^|; )report-uri https://\w+},
