@@ -13,7 +13,6 @@ my %tls = (
 # app to bind only an HTTP (not HTTPS) listener to it.
 my $http_port = $ENV{PORT} // 80;
 
-my $g_fonts = 'https://fonts.googleapis.com';
 my $cf_ajax = 'https://cdnjs.cloudflare.com/ajax/libs';
 my $jsdlvr_npm = 'https://cdn.jsdelivr.net/npm';
 
@@ -21,6 +20,7 @@ my %version = (
     gparse => '1.0.0',
     jquery => '3.6.0',
     bootstrap => '5.0.0-beta2',
+    bs_icons => '1.4.0',
 );
 
 my %frontend = (
@@ -29,7 +29,7 @@ my %frontend = (
         bootstrap => "$jsdlvr_npm/bootstrap\@$version{bootstrap}/dist/js/bootstrap.bundle.min.js",
     },
     style => {
-        materialicons => "$g_fonts/css?family=Material+Icons",
+        bs_icons => "$jsdlvr_npm/bootstrap-icons\@$version{bs_icons}/font/bootstrap-icons.min.css",
         bootstrap => "$jsdlvr_npm/bootstrap\@$version{bootstrap}/dist/css/bootstrap.min.css",
     },
 );
@@ -87,8 +87,7 @@ my @csp_self = qw(
             map s/\?.*$//r, values %{ $frontend{style} },
         ],
         'font-src' => [
-            $g_fonts,
-            'https://fonts.gstatic.com',
+            "$jsdlvr_npm/",
         ],
         'img-src' => [
             'data:',
@@ -105,6 +104,7 @@ my @csp_self = qw(
         },
         style => {
             bootstrap => 'sha256-nq7J0kse50upWdNiXRDsuGd/AkfaHz0hX8HgCUsCASY=',
+            bs_icons => 'sha256-lI2In5ZqCqWa4merWAkEUg9jc1GESsaifURWxtcV3HU=',
         },
     },
 }
