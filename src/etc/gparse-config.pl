@@ -18,7 +18,7 @@ my $cf_ajax = 'https://cdnjs.cloudflare.com/ajax/libs';
 
 my %version = (
     gparse => '1.0.0',
-    jquery => '3.5.1',
+    jquery => '3.6.0',
     materialize => '1.0.0',
 );
 
@@ -99,7 +99,7 @@ my @csp_self = qw(
     # Subresource Integrity
     sri => {
         script => {
-            jquery => 'sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=',
+            jquery => 'sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=',
             materialize => 'sha256-U/cHDMTIHCeMcvehBv1xQ052bPSbJtbuiw4QA9cTKz0=',
         },
         style => {
