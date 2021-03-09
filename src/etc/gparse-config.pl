@@ -15,21 +15,22 @@ my $http_port = $ENV{PORT} // 80;
 
 my $g_fonts = 'https://fonts.googleapis.com';
 my $cf_ajax = 'https://cdnjs.cloudflare.com/ajax/libs';
+my $jsdlvr_npm = 'https://cdn.jsdelivr.net/npm';
 
 my %version = (
     gparse => '1.0.0',
     jquery => '3.6.0',
-    materialize => '1.0.0',
+    bootstrap => '5.0.0-beta2',
 );
 
 my %frontend = (
     script => {
         jquery => "$cf_ajax/jquery/$version{jquery}/jquery.min.js",
-        materialize => "$cf_ajax/materialize/$version{materialize}/js/materialize.min.js",
+        bootstrap => "$jsdlvr_npm/bootstrap\@$version{bootstrap}/dist/js/bootstrap.bundle.min.js",
     },
     style => {
         materialicons => "$g_fonts/css?family=Material+Icons",
-        materialize => "$cf_ajax/materialize/$version{materialize}/css/materialize.min.css",
+        bootstrap => "$jsdlvr_npm/bootstrap\@$version{bootstrap}/dist/css/bootstrap.min.css",
     },
 );
 
@@ -100,10 +101,10 @@ my @csp_self = qw(
     sri => {
         script => {
             jquery => 'sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=',
-            materialize => 'sha256-U/cHDMTIHCeMcvehBv1xQ052bPSbJtbuiw4QA9cTKz0=',
+            bootstrap => 'sha256-tfbRzZ36wuPoeUKXyuewrLOzcfgdO2ovc4ozuYRWMs4=',
         },
         style => {
-            materialize => 'sha256-OweaP/Ic6rsV+lysfyS4h+LM6sRwuO3euTYfr6M124g=',
+            bootstrap => 'sha256-nq7J0kse50upWdNiXRDsuGd/AkfaHz0hX8HgCUsCASY=',
         },
     },
 }
