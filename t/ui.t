@@ -3,7 +3,7 @@
 use Mojo::Base qw(-strict);
 use Mojo::DOM;
 use Mojo::UserAgent;
-use Test::More tests => 32;
+use Test::More tests => 38;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
@@ -98,6 +98,9 @@ $dom->find('link[href][integrity], script[src][integrity]')->each (sub {
     my $sri = $_->attr ('integrity');
 
     my ($algo, $got_hash) = $sri =~ /^([a-z0-9]+)-(.*)=$/;
+
+    ok defined $algo, 'Hash algorithm found in SRI';
+    ok defined $got_hash, 'Hash found in SRI';
 
     my $content = $ua->get($uri)->result->body;
     my $expected_hash = eval {
