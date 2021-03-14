@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 
 use Mojo::Base qw(-strict);
-use Test::More tests => 9;
+use Test::More tests => 10;
 use Test::Mojo;
 
 use HTTP::Status qw(:constants);
@@ -13,6 +13,8 @@ require (rel2abs(dirname __FILE__) . '/../src/gparse.pl');
 my $t = Test::Mojo->new;
 
 my $robots = $t->app->routes->lookup('robots')->to_string;
+
+is $robots, '/robots.txt', 'correct path for robots.txt';
 
 $t->get_ok ($robots)
   ->status_is (HTTP_OK, 'HTTP status')
