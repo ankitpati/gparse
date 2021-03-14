@@ -29,7 +29,7 @@ my %frontend = (
         bootstrap => "$jsdlvr_npm/bootstrap\@$version{bootstrap}/dist/js/bootstrap.bundle.min.js",
     },
     style => {
-        bs_icons => "$jsdlvr_npm/bootstrap-icons\@$version{bs_icons}/font/bootstrap-icons.min.css",
+        bs_icons => "$jsdlvr_npm/bootstrap-icons\@$version{bs_icons}/font/bootstrap-icons.css",
         bootstrap => "$jsdlvr_npm/bootstrap\@$version{bootstrap}/dist/css/bootstrap.min.css",
     },
 );
@@ -104,7 +104,7 @@ my @csp_self = qw(
         },
         style => {
             bootstrap => 'sha256-nq7J0kse50upWdNiXRDsuGd/AkfaHz0hX8HgCUsCASY=',
-            bs_icons => 'sha256-lI2In5ZqCqWa4merWAkEUg9jc1GESsaifURWxtcV3HU=',
+            bs_icons => 'sha256-rlQRIEywGeFAwUjmU9vLTshcui4Hn/WP++pVMIefSnY=',
         },
     },
 }
