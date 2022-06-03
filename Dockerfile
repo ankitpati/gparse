@@ -1,40 +1,57 @@
 FROM perl
-LABEL maintainer="Ankit Pati <contact@ankitpati.in>"
+
+LABEL org.opencontainers.image.authors="Ankit Pati <contact@ankitpati.in>"
+LABEL org.opencontainers.image.source="https://gitlab.com/ankitpati/gparse/-/raw/master/Dockerfile"
+LABEL org.opencontainers.image.licenses="GPL-3.0+"
 
 RUN apt update
 RUN apt dist-upgrade -y
 
-ENV PERL_CPANM_OPT="--mirror https://cpan.metacpan.org/"
+ENV PERL_CPANM_OPT="--from https://www.cpan.org/ --verify"
 
 # keep the following section sorted & uniq’d
-RUN cpanm CSS::Packer
-RUN cpanm Cpanel::JSON::XS
-RUN cpanm EV
-RUN cpanm HTML::Packer
-RUN cpanm IO::Compress::Brotli
-RUN cpanm IO::Socket::SSL
-RUN cpanm IO::Socket::Socks
-RUN cpanm JavaScript::Packer
-RUN cpanm LWP::Protocol::https
-RUN cpanm LWP::Simple
-RUN cpanm Mojolicious
-RUN cpanm Net::DNS::Native
-RUN cpanm Net::IDN::Encode
-RUN cpanm Net::IDN::Nameprep
-RUN cpanm Role::Tiny
-RUN cpanm Test::Pod
-RUN cpanm Test::Pod::Coverage
+RUN apt install -y \
+    bash-completion \
+    git \
+    libdigest-sha-perl \
+    libmodule-signature-perl \
+    man-db \
+    vim-nox \
+;
 
 # keep the following section sorted & uniq’d
-RUN apt install -y bash-completion
-RUN apt install -y git
-RUN apt install -y man-db
-RUN apt install -y vim-nox
+RUN cpanm \
+    Digest::SHA \
+    Module::Signature \
+;
 
-RUN git clone https://github.com/vlad2/git-sh.git
-RUN make -C git-sh/
-RUN make -C git-sh/ install
-RUN rm -rf git-sh/
+# keep the following section sorted & uniq’d
+RUN cpanm \
+    CSS::Packer \
+    Cpanel::JSON::XS \
+    EV \
+    Future::AsyncAwait \
+    HTML::Packer \
+    IO::Compress::Brotli \
+    IO::Socket::SSL \
+    IO::Socket::Socks \
+    JavaScript::Packer \
+    LWP::Protocol::https \
+    LWP::Simple \
+    Mojolicious \
+    Net::DNS::Native \
+    Net::IDN::Encode \
+    Net::IDN::Nameprep \
+    Role::Tiny \
+    Test::Pod \
+    Test::Pod::Coverage \
+;
+
+RUN \
+    git clone 'https://github.com/vlad2/git-sh.git' && \
+    make -C git-sh/ install && \
+    rm -rf git-sh/ && \
+true
 
 RUN useradd gparse
 
@@ -42,5 +59,4 @@ USER gparse
 
 COPY . /opt/gparse
 WORKDIR /opt/gparse
-ENTRYPOINT ["bash"]
-CMD ["-l"]
+ENTRYPOINT ["bash", "-l"]
