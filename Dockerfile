@@ -47,15 +47,17 @@ RUN cpanm \
     Test::Pod::Coverage \
 ;
 
-RUN \
-    git clone 'https://github.com/vlad2/git-sh.git' && \
-    make -C git-sh/ install && \
-    rm -rf git-sh/ && \
-true
-
 RUN useradd gparse
 
 USER gparse
+
+WORKDIR /home/gparse
+
+RUN \
+    git clone --depth=1 'https://gitlab.com/ankitpati/git-sh.git' && \
+    make -C git-sh/ PREFIX='$(HOME)/.local' install && \
+    rm -rf git-sh/ && \
+true
 
 COPY . /opt/gparse
 WORKDIR /opt/gparse
