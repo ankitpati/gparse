@@ -47,7 +47,12 @@ RUN cpanm \
     Test::Pod::Coverage \
 ;
 
-RUN useradd gparse
+RUN \
+    useradd gparse && \
+    mkdir /home/gparse && \
+    chmod 0700 /home/gparse && \
+    chown gparse:gparse /home/gparse && \
+true
 
 USER gparse
 
