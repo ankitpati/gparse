@@ -1,4 +1,4 @@
-FROM perl
+FROM docker.io/library/perl
 
 LABEL org.opencontainers.image.authors="Ankit Pati <contact@ankitpati.in>"
 LABEL org.opencontainers.image.source="https://gitlab.com/ankitpati/gparse/-/raw/master/Dockerfile"
