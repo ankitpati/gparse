@@ -74,4 +74,4 @@ true
 
 COPY . /opt/gparse
 WORKDIR /opt/gparse
-ENTRYPOINT ["bash", "-l"]
+CMD ["bash", "-l"]
