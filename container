@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+container_manager="$(command -v podman 2>/dev/null)"
+test -z "$container_manager" && container_manager='docker'
+
+image='gparse-dev'
+
+mydir="$(dirname "$0")/"
+cd "$mydir"
+
+"$container_manager" build --tag="$image" . && \
+"$container_manager" run -it "$image" "$@"
