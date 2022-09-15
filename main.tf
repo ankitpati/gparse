@@ -18,8 +18,8 @@ resource "docker_image" "gparse-dev" {
 }
 
 resource "docker_container" "gparse-dev" {
-  image = docker_image.gparse-dev.latest
-  name  = "gparse-dev"
+  image   = docker_image.gparse-dev.image_id
+  name    = "gparse-dev"
   command = ["morbo", "src/gparse.pl"]
   ports {
     internal = 3000
