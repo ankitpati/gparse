@@ -11,6 +11,10 @@ terraform {
 resource "docker_image" "gparse-dev" {
   name         = "gparse-dev"
   keep_locally = true
+  build {
+    path = "."
+    tag  = ["gparse-dev"]
+  }
 }
 
 resource "docker_container" "gparse-dev" {
