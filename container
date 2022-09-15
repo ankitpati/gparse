@@ -8,5 +8,5 @@ image='gparse-dev'
 mydir="$(dirname "$0")/"
 cd "$mydir"
 
-"$container_manager" build --tag="$image" . && \
+"$container_manager" build --pull --tag="$image" . && \
 "$container_manager" run -it "$image" "$@"
