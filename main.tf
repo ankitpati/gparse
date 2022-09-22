@@ -15,7 +15,7 @@ resource "docker_image" "gparse-dev" {
     dockerfile_hash = filesha256("Dockerfile")
   }
   build {
-    path = "."
+    path = dirname(path.module)
     tag  = ["gparse-dev"]
   }
 }
