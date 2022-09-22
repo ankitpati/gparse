@@ -11,6 +11,9 @@ terraform {
 resource "docker_image" "gparse-dev" {
   name         = "gparse-dev"
   keep_locally = true
+  triggers = {
+    dockerfile_hash = filesha256("Dockerfile")
+  }
   build {
     path = "."
     tag  = ["gparse-dev"]
