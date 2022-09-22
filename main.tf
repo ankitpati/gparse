@@ -16,7 +16,7 @@ resource "docker_image" "gparse-dev" {
   name         = "${local.app_name}-image"
   keep_locally = true
   triggers = {
-    source_code_hash = sha256(join("", [for source_file in fileset(path.module, "**") : filesha256(source_file)]))
+    dockerfile_hash = filesha256("Dockerfile")
   }
   build {
     path = path.module
