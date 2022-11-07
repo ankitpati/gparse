@@ -20,7 +20,6 @@ resource "docker_image" "gparse-dev" {
   }
   build {
     path = path.module
-    tag  = [local.app_name]
   }
 }
 
