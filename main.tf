@@ -1,9 +1,9 @@
 terraform {
-  required_version = ">= 1.3.0"
+  required_version = ">= 1.5.6"
   required_providers {
     docker = {
       source  = "kreuzwerker/docker"
-      version = ">= 2.22.0"
+      version = ">= 3.0.2"
     }
   }
 }
@@ -19,7 +19,7 @@ resource "docker_image" "gparse-dev" {
     dockerfile_hash = filesha256("Dockerfile")
   }
   build {
-    path = path.module
+    context = path.module
   }
 }
 
