@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
-container_manager="$(command -v podman 2>/dev/null)"
-test -z "$container_manager" && container_manager='docker'
+set -euo pipefail
+
+if command -v podman &>/dev/null
+then
+    container_manager='podman'
+else
+    container_manager='docker'
+fi
 
 image='gparse-dev'
 
 mydir="$(dirname "$0")/"
 cd "$mydir"
 
-"$container_manager" build --pull --tag="$image" . && \
-"$container_manager" run -it "$image" "$@"
+"$container_manager" build --tag="$image" .
+"$container_manager" run --interactive --tty "$image" "$@"
