@@ -96,6 +96,9 @@ hook after_render => sub {
     my $h = $c->res->headers;
     $h->content_encoding ('br')
       ->content_security_policy ($content->{csp})
+      ->add ('Cross-Origin-Embedder-Policy' => 'require-corp')
+      ->add ('Cross-Origin-Opener-Policy' => 'same-origin')
+      ->add ('Cross-Origin-Resource-Policy' => 'same-site')
       ->add ('Referrer-Policy' => 'no-referrer')
     ;
 
@@ -104,7 +107,10 @@ hook after_render => sub {
 
 hook after_dispatch => sub {
     my $c = shift;
-    $c->res->headers->remove ('Server');
+    my $h = $c->res->headers;
+    $h->remove ('Server')
+      ->remove ('Vary')
+    ;
 };
 
 helper style_sri => sub {
